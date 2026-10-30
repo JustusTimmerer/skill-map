@@ -1,0 +1,62 @@
+{
+  "format": "it-skills-map",
+  "schema": 1,
+  "title": "Beispielkarte für Tests",
+  "exportedAt": "2026-10-18T22:00:00Z",
+  "collections": {
+    "areas": {
+      "sd": { "name": "Softwareentwicklung", "color": "#2c5fc4", "at": [20, -107], "order": 1 },
+      "data": { "name": "Daten & Datenbanken", "color": "#a96a06", "at": [-374, -181], "order": 2 },
+      "ai": { "name": "KI & Machine Learning", "color": "#0a8573", "at": [302, 76], "order": 3 }
+    },
+    "stations": {
+      "UNI": { "name": "Hochschule Musterstadt", "when": "2008 – 2012", "kind": "Ausbildung", "months": 48, "order": 1,
+               "note": "Studium der Informatik mit Schwerpunkt Datenbanken." },
+      "ACME": { "name": "Beispiel GmbH", "when": "03.2012 – 09.2020", "kind": "Arbeitgeber", "months": 102, "order": 2,
+                "note": "Softwareentwickler für Web-APIs und Berichte." },
+      "LAB": { "name": "Testlabor AG", "when": "10.2020 – 06.2026", "kind": "Arbeitgeber", "months": 69, "order": 3,
+               "note": "Backend eines Laborsystems, Migration auf .NET 8." },
+      "SIDE": { "name": "Kartenprojekt", "when": "seit 07.2026", "kind": "Privates Projekt", "months": 3, "order": 4,
+                "note": "Eine Karte der eigenen Kenntnisse mit D3." }
+    },
+    "groups": {
+      "sd-lang": { "name": "Sprachen", "area": "sd", "order": 1 },
+      "sd-web": { "name": "Web", "area": "sd", "order": 2 },
+      "data-db": { "name": "Datenbanken", "area": "data", "order": 1 },
+      "data-rep": { "name": "Reporting", "area": "data", "order": 2 },
+      "ai-tools": { "name": "KI-Werkzeuge", "area": "ai", "order": 1 }
+    },
+    "skills": {
+      "c-sharp": { "name": "C#", "group": "sd-lang", "rating": 3, "places": ["ACME", "LAB", "SIDE"], "order": 1,
+                   "standard": { "text": "Standard seit Beispiel GmbH in allen Stationen", "since": "ACME" } },
+      "python": { "name": "Python", "group": "sd-lang", "rating": 1, "places": ["UNI", "SIDE"], "order": 2 },
+      "typescript": { "name": "TypeScript", "group": "sd-lang", "rating": 2, "places": ["LAB", "SIDE"], "order": 3 },
+      "asp-net-core": { "name": "ASP.NET Core", "group": "sd-web", "rating": 3, "places": ["ACME", "LAB"], "order": 1 },
+      "d3": { "name": "D3.js", "group": "sd-web", "rating": -1, "places": ["SIDE"], "order": 2 },
+      "postgresql": { "name": "PostgreSQL", "group": "data-db", "rating": 2, "places": ["UNI", "LAB", "SIDE"], "order": 1 },
+      "t-sql": { "name": "T-SQL", "group": "data-db", "rating": 3, "places": ["ACME", "LAB"], "order": 2 },
+      "ssrs": { "name": "Reporting Services", "group": "data-rep", "rating": 1, "places": ["ACME"], "order": 1 },
+      "claude-code": { "name": "Claude Code", "group": "ai-tools", "rating": 2, "places": ["SIDE"], "order": 1 },
+      "prompting": { "name": "Prompt Engineering", "group": "ai-tools", "rating": 0, "places": ["LAB", "SIDE"], "order": 2 }
+    },
+    "projects": {
+      "acme-kundenportal": { "name": "Kundenportal mit Web-API", "station": "ACME", "order": 1, "base": false, "when": "2014 – 2018",
+                             "skills": ["c-sharp", "asp-net-core", "t-sql"] },
+      "acme-berichte": { "name": "Monatsberichte für den Vertrieb", "station": "ACME", "order": 2, "base": false, "when": "",
+                         "skills": ["t-sql", "ssrs"] },
+      "lab-migration": { "name": "Migration der Dienste auf .NET 8", "station": "LAB", "order": 1, "base": true, "when": "2024",
+                         "skills": ["c-sharp", "asp-net-core", "postgresql", "typescript"] },
+      "side-karte": { "name": "Skill-Karte mit D3", "station": "SIDE", "order": 1, "base": false, "when": "07.2026",
+                      "skills": ["typescript", "d3", "python", "claude-code", "prompting"] }
+    },
+    "configs": {
+      "base": { "name": "Base", "schema": 4, "savedAt": "2026-10-18T12:00:00Z",
+                "values": { "lineMode": "category", "areaCharge": 20, "groupCharge": 240, "hold": 12.8,
+                            "at": { "sd": [20, -107], "data": [-374, -181], "ai": [302, 76] },
+                            "lines": { "category": { "lineCount": 8, "bridgeOpacityMin": 0.05, "bridgeOpacityMax": 0.25 } } } }
+    },
+    "settings": {
+      "reader": { "config": "base", "pickedAt": "2026-10-18T12:00:00Z" }
+    }
+  }
+}

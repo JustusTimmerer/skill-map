@@ -1,0 +1,30 @@
+{
+  "reader": "weit",
+  "configs": [
+    {
+      "id": "weit",
+      "name": "Weit",
+      "schema": 4,
+      "values": {
+        "lineMode": "category",
+        "ticks": 500,
+        "standardSkills": false,
+        "lines": { "category": { "drawnBridges": 2, "bridgeWidthMax": 4 } },
+        "at": { "sd": [-420, -60], "ai": [420, -60], "data": [0, 380] }
+      },
+      "savedAt": "2026-10-18T08:00:00.000Z"
+    },
+    {
+      "id": "eng",
+      "name": "Eng",
+      "schema": 4,
+      "values": {
+        "lineMode": "mixed",
+        "ticks": 200,
+        "lines": { "mixed": { "drawnBridges": 5 } },
+        "at": { "sd": [-200, 40], "ai": [200, 40], "data": [0, 160] }
+      },
+      "savedAt": "2026-10-18T07:00:00.000Z"
+    }
+  ]
+}

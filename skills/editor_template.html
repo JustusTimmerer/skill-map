@@ -1,0 +1,416 @@
+<style>
+/* The page fills the window, and a hidden element never shows. */
+body { margin: 0; }
+[hidden] { display: none !important; }
+/* Layout: the atlas screen. Toolbar on top, zoomable network map with an edit banner, panel at the right (below the map on phones). */
+:root {
+  --bg: #f3f6f5;
+  --surface: #ffffff;
+  --ink: #17201e;
+  --muted: #596763;
+  --line: #d2dad8;
+  --xp-aged: #8d9996;
+  --c-sd: #2c5fc4;
+  --c-ai: #0a8573;
+  --c-data: #a96a06;
+  --c-infra: #7a4ca6;
+  --c-fach: #c0384f;
+  --c-lead: #566170;
+  --font-ui: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1517; --surface: #151d20; --ink: #e3ebe9; --muted: #93a3a0; --line: #2a3638; --xp-aged: #6f7d7a;
+    --c-sd: #84a8f2; --c-ai: #45c8b1; --c-data: #e2a443; --c-infra: #bb94e3; --c-fach: #f07d8f; --c-lead: #aab4c0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1517; --surface: #151d20; --ink: #e3ebe9; --muted: #93a3a0; --line: #2a3638; --xp-aged: #6f7d7a;
+  --c-sd: #84a8f2; --c-ai: #45c8b1; --c-data: #e2a443; --c-infra: #bb94e3; --c-fach: #f07d8f; --c-lead: #aab4c0;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 14px; }
+.app { height: 100%; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+header { background: var(--surface); border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.brand { display: grid; gap: 2px; min-width: 0; margin-right: auto; }
+.brand h1 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+.brand p { margin: 0; color: var(--muted); font-size: 12.5px; }
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.search { position: relative; }
+.search input { font: inherit; font-size: 13px; width: 210px; max-width: 60vw; padding: 7px 10px 7px 30px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+.search svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; stroke: var(--muted); fill: none; }
+button { font: inherit; font-size: 13px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--c-sd); outline-offset: 2px; }
+.zoombtns { display: flex; }
+.zoombtns button { border-radius: 0; min-width: 34px; }
+.zoombtns button:first-child { border-radius: 6px 0 0 6px; }
+.zoombtns button:last-child { border-radius: 0 6px 6px 0; }
+.zoombtns button + button { border-left: 0; }
+.areas { flex-basis: 100%; min-width: 0; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 12.5px; padding: 4px 10px; border-radius: 999px; }
+.chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+.chip[aria-pressed="true"] { background: color-mix(in srgb, var(--c, var(--ink)) 14%, var(--surface)); border-color: var(--c, var(--ink)); }
+main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; }
+.map { position: relative; min-height: 0; overflow: hidden; }
+#map { width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; background: var(--bg); }
+#map:active { cursor: grabbing; }
+.hint { position: absolute; left: 12px; bottom: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+aside { background: var(--surface); border-left: 1px solid var(--line); overflow-y: auto; padding: 18px 18px 24px; display: grid; align-content: start; gap: 14px; min-width: 0; }
+aside h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
+aside h3 { margin: 4px 0 0; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+aside p { margin: 0; line-height: 1.5; }
+.muted { color: var(--muted); }
+.crumb { font-family: var(--font-mono); font-size: 11px; color: var(--c, var(--muted)); letter-spacing: 0.04em; }
+.crumb .linkbtn { font: inherit; letter-spacing: inherit; color: inherit; cursor: pointer; }
+.rating { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+.rating svg { overflow: visible; }
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.list li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: baseline; }
+.when { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--ink); text-align: left; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.linkbtn:hover { text-decoration-color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.areas-list { display: grid; gap: 6px; }
+.areas-list button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; text-align: left; padding: 8px 10px; }
+.areas-list i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.areas-list span:last-child { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.legend { display: grid; gap: 4px; font-size: 12.5px; }
+.legend button { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; text-align: left; background: none; border-color: transparent; padding: 4px 6px; }
+.legend button:hover { border-color: var(--line); }
+.legend button[aria-pressed="true"] { border-color: var(--ink); background: var(--bg); }
+.legend button span:last-child { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.legend svg { overflow: visible; }
+.badge { justify-self: start; font-size: 12px; padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--c, var(--ink)) 12%, var(--surface)); color: var(--ink); }
+.back { justify-self: start; font-size: 12.5px; }
+.k-sd { --c: var(--c-sd); } .k-ai { --c: var(--c-ai); } .k-data { --c: var(--c-data); } .k-infra { --c: var(--c-infra); } .k-fach { --c: var(--c-fach); } .k-lead { --c: var(--c-lead); }
+/* projects and editing */
+.save-state { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.save-state[data-state="error"], .save-state[data-state="readonly"], .save-state[data-state="offline"] { color: var(--c-fach); }
+button.primary { background: var(--ink); color: var(--surface); border-color: var(--ink); font-weight: 600; }
+button.primary:hover { background: color-mix(in srgb, var(--ink) 86%, var(--surface)); }
+button.danger { color: var(--c-fach); border-color: var(--c-fach); font-weight: 600; }
+#projects-btn[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.notice { border: 1px solid var(--c-fach); border-radius: 6px; padding: 8px 10px; }
+.confirm { display: grid; gap: 10px; border: 1px solid var(--c-fach); border-radius: 8px; padding: 12px; background: color-mix(in srgb, var(--c-fach) 6%, var(--surface)); }
+.station { display: grid; gap: 4px; }
+.station-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.station-head h3 { margin: 0; }
+.plist { list-style: none; margin: 0; padding: 0; display: grid; }
+.plist button { width: 100%; display: grid; grid-template-columns: 2.2em minmax(0, 1fr) auto; gap: 8px; align-items: baseline; text-align: left; background: none; border-color: transparent; padding: 6px 4px; }
+.plist button:hover { border-color: var(--line); background: var(--bg); }
+.num, .count { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.num { text-align: right; }
+.pname { min-width: 0; overflow-wrap: anywhere; line-height: 1.35; }
+.flag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; white-space: nowrap; }
+.add { justify-self: start; font-size: 12.5px; background: none; border-style: dashed; }
+.tag { gap: 4px; padding: 2px 2px 2px 10px; white-space: normal; background: color-mix(in srgb, var(--c, var(--muted)) 10%, var(--surface)); border: 1px solid color-mix(in srgb, var(--c, var(--muted)) 40%, var(--line)); }
+.tag .linkbtn { font-size: 12.5px; text-decoration: none; }
+.tag .linkbtn:hover { text-decoration: underline; }
+.tag .x { border: 0; background: none; border-radius: 999px; padding: 0 7px; font-size: 16px; line-height: 1.3; color: var(--muted); }
+.tag .x:hover { color: var(--ink); background: var(--bg); }
+.form { display: grid; gap: 6px; }
+.form label { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.form input[type="text"], .form input[type="number"], .form select { font: inherit; font-size: 14px; width: 100%; box-sizing: border-box; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+.form .check { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 13.5px; }
+.form .check input { width: 16px; height: 16px; margin: 0; accent-color: var(--ink); }
+.form fieldset { border: 0; padding: 0; margin: 6px 0 0; display: grid; gap: 6px; min-width: 0; }
+.form legend { font-size: 12.5px; color: var(--muted); padding: 0; margin-bottom: 4px; }
+.form .actions { margin-top: 10px; }
+.form .std-fields { display: grid; gap: 6px; }
+.form .std-fields[hidden] { display: none; }
+.small { font-size: 12.5px; }
+.error { color: var(--c-fach); }
+/* The features of the runtime (FEATURES in skills/page.js): the link to the start page and the buttons for the map
+   file, and the fields of the area and station forms. A runtime without features shows none of them. */
+a.tool-link { font-size: 13px; color: var(--ink); text-decoration: none; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+a.tool-link:hover { border-color: var(--muted); }
+a.tool-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.file-message { flex-basis: 100%; margin: 0; font-size: 12.5px; color: var(--c-fach); }
+.form textarea { font: inherit; font-size: 14px; width: 100%; box-sizing: border-box; min-height: 5em; resize: vertical; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+.form input[type="color"] { width: 64px; height: 32px; padding: 2px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); cursor: pointer; }
+.form .pair { display: grid; grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 6px 8px; align-items: center; }
+.form .pair label { margin: 0; }
+@media (max-width: 760px) { header:has(a.tool-link) .brand p { display: none; } }
+/* The dropdown of the languages in the header (assets/i18n.js), and the message of a failed choice. It stays the last of
+   the tools, also after the tools that the runtime adds. The embed view and a page in a frame have none. */
+.language { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-width: 0; }
+.language[hidden] { display: none; }
+.language-select { font: inherit; font-size: 13px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; cursor: pointer; }
+.language-select:hover { border-color: var(--muted); }
+.language-message { font-size: 12.5px; color: var(--c-fach); }
+.language-note { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 12.5px; color: var(--ink); }
+.language-note[hidden] { display: none; }
+.language-reload { font: inherit; font-size: 12.5px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; cursor: pointer; }
+.language-reload:hover { border-color: var(--muted); }
+.editbar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 8px 8px 8px 14px; background: var(--ink); color: var(--surface); border-radius: 8px; box-shadow: 0 4px 16px color-mix(in srgb, var(--ink) 22%, transparent); }
+.editbar[hidden] { display: none; }
+.editbar-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.editbar strong { font-size: 15px; min-width: 0; overflow-wrap: anywhere; }
+.editbar .when { color: inherit; opacity: 0.75; }
+.editbar button { margin-left: auto; background: var(--surface); color: var(--ink); border-color: var(--surface); font-weight: 600; }
+/* Time range filter below the panel: two handles over the months, the stations as bars above, the years below. */
+.side { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; min-width: 0; }
+.timebar { background: var(--surface); border-left: 1px solid var(--line); border-top: 1px solid var(--line); padding: 8px 18px 8px; display: grid; gap: 2px; min-width: 0; overflow: hidden; }
+.time-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.time-title { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.time-label { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; margin-right: auto; white-space: nowrap; }
+.time-reset { font-size: 12px; padding: 3px 8px; }
+.time-reset.idle { visibility: hidden; }
+.time-scale { position: relative; margin: 0 9px; }
+.time-places { position: relative; }
+.time-place { position: absolute; height: 6px; min-width: 3px; padding: 0; border: 0; border-radius: 0; background: none; cursor: pointer; }
+.time-place::after { content: ""; position: absolute; left: 0; right: 0; top: 1px; height: 4px; border-radius: 2px; background: var(--muted); opacity: 0.55; }
+.time-place:hover::after { opacity: 1; }
+.timed-bar .time-place.on::after { background: var(--ink); opacity: 0.85; }
+.timed-bar .time-place:not(.on)::after { opacity: 0.3; }
+.time-track { position: relative; height: 26px; touch-action: pan-y; cursor: pointer; }
+.time-rail, .time-fill { position: absolute; top: 11px; height: 4px; border-radius: 2px; }
+.time-rail { left: 0; right: 0; background: var(--line); }
+.time-fill { background: var(--ink); }
+.time-handle { position: absolute; top: 4px; width: 18px; height: 18px; margin-left: -9px; box-sizing: border-box; border-radius: 50%; background: var(--surface); border: 2px solid var(--ink); cursor: grab; touch-action: none; }
+.time-handle::before { content: ""; position: absolute; inset: -6px; border-radius: 50%; }
+.time-handle:active { cursor: grabbing; }
+.time-handle:focus-visible { outline: 2px solid var(--c-sd); outline-offset: 2px; }
+.time-years { position: relative; height: 14px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.time-years span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.time-years i { position: absolute; top: -4px; width: 1px; height: 3px; background: var(--line); }
+#panel .off-time { opacity: 0.45; }
+/* Downloads below the time range: the map as drawn now, as an SVG, a PNG or a PDF file. Hidden until the map is drawn. */
+.downloads { background: var(--surface); border-left: 1px solid var(--line); border-top: 1px solid var(--line); padding: 6px 18px 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; min-width: 0; }
+.downloads[hidden] { display: none; }
+.downloads-title { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-right: auto; }
+.downloads button { font-size: 12px; padding: 3px 7px; }
+.downloads button:disabled { opacity: 0.5; cursor: default; }
+.download-state { flex-basis: 100%; font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; }
+.download-state:empty { display: none; }
+.download-state.error { color: var(--c-fach); }
+@media (max-width: 760px) { .downloads { border-left: 0; padding: 4px 16px 6px; } }
+/* map drawing */
+.tree { fill: none; stroke: var(--c); stroke-opacity: 0.5; }
+.use { fill: none; stroke: var(--c); }
+.use.w1 { display: none; }
+/* Lines of shared use, between categories or between skills. */
+.shared-line { fill: none; stroke: var(--shared-light, var(--muted)); stroke-linecap: round; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .shared-line { stroke: var(--shared-dark, var(--muted)); } }
+:root[data-theme="dark"] .shared-line { stroke: var(--shared-dark, var(--muted)); }
+/* Skill-Kategorie: a line takes the area color of its skill (class k-<area>), in both themes. */
+.shared-line.mixed { --shared-light: var(--c); --shared-dark: var(--c); }
+/* A focus dims the lines, but not the lines filtered for a clicked skill, category or area. */
+.focus:not(.line-filter) .shared-line { stroke-opacity: 0.04 !important; }
+.node { cursor: pointer; }
+.hit { fill: transparent; }
+.dot-area, .dot-group { fill: var(--c); stroke: var(--bg); }
+.dot-group { fill-opacity: 0.88; }
+.s-fill { fill: var(--c); stroke: var(--bg); }
+.s-ring { fill: var(--bg); stroke: var(--c); }
+.card { fill: var(--bg); fill-opacity: 0.86; }
+.t-skill { fill: var(--ink); }
+.t-group, .t-area { fill: var(--c); font-weight: 700; }
+.node.selected .s-fill, .node.selected .s-ring, .node.match .s-fill, .node.match .s-ring { stroke: var(--ink); }
+.focus .node:not(.on) { opacity: 0.14; }
+.focus .tree:not(.on) { stroke-opacity: 0.06; }
+.focus .use:not(.on) { stroke-opacity: 0.03 !important; }
+.focus .use.on { display: inline; stroke-opacity: 0.75 !important; }
+/* Time range: skills outside it, and categories and areas without a skill in it, fade like the non-matches of a search.
+   A clicked node stays visible. While a project gets its skills, the map shows every skill. */
+#map:not(.editing) .node.out-of-time:not(.selected) { opacity: 0.14; }
+#map:not(.editing) .tree.out-of-time { stroke-opacity: 0.06; }
+/* Experience ring: colored for the fresh years, grey for the aged share, a faint track for the rest of the ten years. */
+.xp circle, .xp path { fill: none; stroke-width: 0.55; }
+.xp-track { stroke: var(--line); stroke-width: 0.3; }
+.xp-fresh { stroke: var(--c); }
+.xp-aged { stroke: var(--xp-aged); }
+.mark { display: none; fill: color-mix(in srgb, var(--c) 30%, transparent); stroke: var(--ink); }
+.editing .node.t-skill.assigned .mark { display: inline; }
+.editing .node.t-skill:not(.assigned) { opacity: 0.4; }
+.editing .node.t-skill.match { opacity: 1; }
+.editing .node.t-group, .editing .node.t-area { opacity: 0.55; }
+.editing .tree { stroke-opacity: 0.14; }
+.editing .shared-line { stroke-opacity: 0.04 !important; }
+@media (prefers-reduced-motion: no-preference) { .node, .tree, .use { transition: opacity 0.18s ease, stroke-opacity 0.18s ease; } }
+@media (max-width: 760px) {
+  main { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(180px, 42%); }
+  aside { border-left: 0; border-top: 1px solid var(--line); }
+  .timebar { border-left: 0; padding: 6px 16px 6px; }
+  .brand { flex-basis: 100%; }
+  .search input { width: 150px; }
+  .hint { display: none; }
+}
+/* Force menu of the owner, at the left of the map. Other visitors never see it. */
+.cfg { position: absolute; z-index: 3; top: 12px; left: max(12px, env(safe-area-inset-left, 0px)); bottom: 12px; width: min(360px, calc(100% - 24px)); overflow-y: auto; overscroll-behavior: contain;
+  display: grid; align-content: start; gap: 10px; padding: 12px 14px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; font-size: 12.5px; color: var(--muted); }
+.cfg[hidden] { display: none; }
+.cfg-head { display: flex; align-items: center; gap: 10px; position: sticky; top: -12px; margin: -12px -14px 0; padding: 12px 14px 8px; background: var(--surface); z-index: 1; }
+.cfg-head h2 { margin: 0; font-size: 14px; color: var(--ink); margin-right: auto; }
+.cfg button { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.cfg button:disabled { opacity: 0.5; cursor: default; }
+.cfg .cfg-run { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cfg .cfg-run.dirty::after { content: " •"; }
+.cfg .cfg-icon { padding: 2px 8px; }
+.cfg button:focus-visible, .cfg input:focus-visible, .cfg summary:focus-visible, .cfg-show:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cfg-check { display: inline-flex; align-items: center; gap: 6px; }
+.cfg-measures { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+.cfg-measures dt { color: var(--muted); }
+.cfg-measures dd { margin: 0; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.cfg details { border-top: 1px solid var(--line); padding-top: 8px; }
+.cfg summary { cursor: pointer; color: var(--ink); font-weight: 600; font-size: 12.5px; letter-spacing: 0.02em; }
+.cfg-note { margin: 4px 0 6px; font-size: 11.5px; }
+.cfg-row { display: grid; gap: 1px; padding: 4px 0; }
+.cfg-row span { display: flex; justify-content: space-between; gap: 10px; }
+.cfg-row output { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cfg-row input[type=range] { width: 100%; accent-color: var(--ink); margin: 2px 0 0; }
+.cfg-row.changed span { color: var(--ink); }
+.cfg-row.cfg-check { display: flex; align-items: center; gap: 6px; }
+.cfg-row.cfg-color { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cfg-row.off { opacity: 0.45; }
+.cfg-count { display: flex; align-items: center; gap: 8px; }
+.cfg-count input[type=range] { flex: 1 1 auto; min-width: 0; }
+.cfg-hint { font-size: 11px; color: var(--muted); }
+.cfg-count input[type=number] { width: 76px; font: inherit; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
+.cfg-color select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
+.cfg-color input { width: 44px; height: 24px; padding: 0 2px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); cursor: pointer; }
+.map.cfg-open #map { margin-left: 384px; width: calc(100% - 384px); }
+.map.cfg-open .hint { left: 396px; }
+/* The edit banner of the project editor stays clear of the menu and of the button that opens it. */
+.map.cfg-open .editbar { left: 414px; }
+.map.cfg-shut .editbar { top: 52px; }
+@media (max-width: 700px) { .map.cfg-open #map { margin-left: 0; width: 100%; } .map.cfg-open .hint { left: 12px; } .map.cfg-open .editbar { left: 12px; } }
+.cfg-foot { display: flex; flex-wrap: wrap; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.cfg-copy { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.cfg-message { flex-basis: 100%; margin: 0; font-size: 11.5px; }
+.cfg-message.error { color: var(--c-fach); }
+.cfg-copy input { flex: 1 1 100%; min-width: 0; font-family: var(--font-mono); font-size: 11px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.cfg-show { position: absolute; z-index: 3; top: 12px; left: max(12px, env(safe-area-inset-left, 0px)); font: inherit; font-size: 12.5px; color: var(--bg); background: var(--ink); border: 1px solid var(--ink); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.cfg-show[hidden] { display: none; }
+.store-form { display: flex; gap: 8px; margin: 2px 0 6px; }
+.store-form input { flex: 1 1 auto; min-width: 0; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.store-ask { display: grid; gap: 6px; margin: 0 0 6px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.store-ask p, .store-confirm { margin: 0; color: var(--ink); }
+.cfg-store [hidden] { display: none; }
+.store-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.store-list li { display: grid; gap: 6px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
+.store-list li.store-picked { border-color: var(--ink); }
+.store-entry { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 10px; }
+.store-name { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; min-width: 0; }
+.store-meta { font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+.store-newer { color: var(--c-fach); }
+.store-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.seed-line { stroke: var(--c); stroke-width: 0.6; stroke-dasharray: 2 2; opacity: 0.7; }
+.seed-handle { cursor: grab; }
+.seed-handle circle { fill: color-mix(in srgb, var(--c) 25%, transparent); stroke: var(--c); stroke-width: 1.2; stroke-dasharray: 2.5 1.5; }
+.seed-handle text { font-family: var(--font-mono); font-size: 3.6px; fill: var(--c); pointer-events: none; }
+</style>
+
+<div class="app">
+  <header>
+    <div class="brand">
+      <!-- The page code writes the title of the map into the heading. -->
+      <h1 id="title"></h1>
+      <p id="subtitle" data-i18n="head.subtitle">Zoom in to read. A click on a skill shows where I used it. Under “Projects” you can filter by project.</p>
+    </div>
+    <div class="tools">
+      <label class="search" for="q">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke-width="1.6"></circle><path d="M11 11l3.5 3.5" stroke-width="1.6" stroke-linecap="round"></path></svg>
+        <input id="q" type="search" placeholder="Search skills" autocomplete="off" aria-label="Search skills" data-i18n-attr="placeholder:head.search; aria-label:head.search">
+      </label>
+      <div class="zoombtns">
+        <button id="zoom-in" type="button" aria-label="Zoom in" data-i18n-attr="aria-label:zoom.in">+</button>
+        <button id="zoom-out" type="button" aria-label="Zoom out" data-i18n-attr="aria-label:zoom.out">−</button>
+        <button id="zoom-fit" type="button" data-i18n="zoom.fit">All</button>
+      </div>
+      <button id="projects-btn" type="button" aria-pressed="false" data-i18n="head.projects">Projects</button>
+      <span id="save-state" class="save-state" aria-live="polite"></span>
+      <div class="language" data-language-picker></div>
+    </div>
+    <nav class="areas" id="areas" aria-label="Areas" data-i18n-attr="aria-label:head.areas"></nav>
+  </header>
+  <main>
+    <div class="map">
+      <svg id="map" role="img" aria-label="Network of skills" data-i18n-attr="aria-label:map.label"></svg>
+      <!-- The force menu stays hidden until the page knows that the viewer owns it (setupForces). -->
+      <section class="cfg" id="cfg" aria-label="Set the forces" data-i18n-attr="aria-label:menu.label" hidden>
+        <div class="cfg-head">
+          <h2 data-i18n="menu.title">Forces</h2>
+          <button type="button" id="cfg-run" class="cfg-run" data-i18n="menu.run">Recalculate</button>
+          <label class="cfg-check" for="cfg-auto" data-i18n="menu.auto"><input id="cfg-auto" type="checkbox" checked>automatic</label>
+          <button type="button" id="cfg-hide" class="cfg-icon" aria-label="Collapse the menu" data-i18n-attr="aria-label:menu.hide">‹</button>
+        </div>
+        <dl class="cfg-measures" id="cfg-measures" aria-live="polite"></dl>
+        <label class="cfg-check" for="spring-seeds" data-i18n="menu.seeds"><input id="spring-seeds" type="checkbox" checked>Show and drag the start points</label>
+        <div id="cfg-groups"></div>
+        <details class="cfg-store" id="spring-store">
+          <summary data-i18n="menu.store.title">Configurations</summary>
+          <p class="cfg-note" data-i18n="menu.store.note">Saves the computed values under a name: all controls, the line values of all three modes and the start points. “Load” sets them like “Load values”. “For readers” picks the configuration that every other visitor sees.</p>
+          <p class="cfg-note" id="store-state" data-i18n="menu.store.connecting">Connecting to the store …</p>
+          <p class="cfg-note" id="store-reader" role="status" hidden></p>
+          <form class="store-form" id="store-form" hidden>
+            <input id="store-name" type="text" maxlength="80" autocomplete="off" spellcheck="false" placeholder="Name of the configuration" aria-label="Name of the configuration" data-i18n-attr="placeholder:menu.store.name; aria-label:menu.store.name">
+            <button type="button" id="store-save" data-i18n="menu.store.save">Save</button>
+          </form>
+          <div class="store-ask" id="store-ask" hidden></div>
+          <p class="cfg-message" id="store-message" role="status"></p>
+          <ul class="store-list" id="store-list" aria-label="Saved configurations" data-i18n-attr="aria-label:menu.store.list" hidden></ul>
+        </details>
+        <div class="cfg-foot">
+          <button type="button" id="spring-reset" data-i18n="menu.foot.reset">Values of layout.js</button>
+          <button type="button" id="spring-favourite" data-i18n="menu.foot.favourite">First favourite</button>
+          <button type="button" id="spring-browser" data-i18n="menu.foot.browser">Last state in this browser</button>
+          <div class="cfg-copy"><input id="spring-values" type="text" spellcheck="false" autocomplete="off" aria-label="Values as one line" data-i18n-attr="aria-label:menu.foot.values" aria-describedby="spring-message">
+            <button type="button" id="spring-copy" data-i18n="menu.foot.copy">Copy values</button><button type="button" id="spring-load" data-i18n="menu.foot.load">Load values</button></div>
+          <p class="cfg-message" id="spring-message" role="status" data-i18n="menu.foot.hint">To load, paste a line into the field and press “Load values”.</p>
+        </div>
+      </section>
+      <button type="button" id="cfg-show" class="cfg-show" data-i18n="menu.show" hidden>Set the forces</button>
+      <div class="hint" data-i18n="map.hint">scroll or drag to zoom and move</div>
+      <div class="editbar" id="editbar" role="status" hidden>
+        <span class="editbar-label" data-i18n="edit.bar">Assign skills</span>
+        <strong id="editbar-name"></strong>
+        <span id="editbar-count" class="when"></span>
+        <button id="editbar-done" type="button" data-i18n="action.done">Done</button>
+      </div>
+    </div>
+    <div class="side">
+      <aside id="panel" aria-live="polite"></aside>
+      <section class="timebar" id="timebar" aria-labelledby="time-title">
+        <div class="time-head">
+          <span class="time-title" id="time-title" data-i18n="time.title">Time range</span>
+          <span class="time-label" id="time-label" data-i18n="time.all">all years</span>
+          <button type="button" class="time-reset idle" id="time-reset" data-i18n="time.reset">All years</button>
+        </div>
+        <div class="time-scale">
+          <div class="time-places" id="time-places"></div>
+          <div class="time-track" id="time-track">
+            <div class="time-rail"></div>
+            <div class="time-fill" id="time-fill"></div>
+            <div class="time-handle" id="time-from" role="slider" tabindex="0" aria-label="Time range from" data-i18n-attr="aria-label:time.from"></div>
+            <div class="time-handle" id="time-to" role="slider" tabindex="0" aria-label="Time range to" data-i18n-attr="aria-label:time.to"></div>
+          </div>
+          <div class="time-years" id="time-years" aria-hidden="true"></div>
+        </div>
+      </section>
+      <section class="downloads" id="downloads" aria-labelledby="downloads-title" hidden>
+        <span class="downloads-title" id="downloads-title" data-i18n="download.title">Download</span>
+        <button type="button" data-file="svg" title="Vector graphic of the map as it looks now" data-i18n-attr="title:download.svg">SVG</button>
+        <button type="button" data-file="png" title="Picture of the map at twice its size" data-i18n-attr="title:download.png">PNG</button>
+        <button type="button" data-file="png4" title="Picture of the map at four times its size, for print and zoom" data-i18n-attr="title:download.png4">PNG 4×</button>
+        <button type="button" data-file="pdf" title="PDF with vectors and searchable text" data-i18n-attr="title:download.pdf">PDF</button>
+        <span class="download-state" id="download-state" role="status"></span>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- The scripts of the page, all files of the site: the interface texts first, then the runtime of its host and its
+     data file, which build_selfhost.js puts at the two marks. -->
+<script src="assets/i18n.js"></script>
+<!--@RUNTIME@-->
+<script src="vendor/d3-7.9.0.min.js"></script>
+<!--@DATA@-->
+<script src="assets/layout.js"></script>
+<script src="assets/page.js"></script>

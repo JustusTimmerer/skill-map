@@ -1,0 +1,8 @@
+{
+  "server.embedMissing.title": { "text": "Map nicht gefunden", "source": "Map not found" },
+  "server.embedMissing.text": { "text": "Nicht gefunden. Diese Map gibt es nicht, oder sie ist nicht mehr freigegeben.", "source": "Not found. This map does not exist, or it is no longer shared." },
+  "server.fallback.missing": { "text": "Die Seite der Map ist auf diesem Server noch nicht installiert (PAGE_FILE fehlt).", "source": "The page of the map is not installed on this server yet (PAGE_FILE is missing)." },
+  "server.fallback.data": { "text": "Die Daten liegen unter", "source": "The data is at" },
+  "server.list.lead": { "text": "Öffentliche Maps", "source": "Public maps" },
+  "server.list.empty": { "text": "Hier gibt es noch keine öffentlichen Maps.", "source": "There are no public maps here yet." }
+}

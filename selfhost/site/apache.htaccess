@@ -1,0 +1,16 @@
+# Cache, content types and security headers for the Skill-Map. Each Header line sits in IfModule, so a web server
+# without mod_headers shows the site without the headers instead of an error page.
+AddType font/woff2 .woff2
+AddType font/ttf .ttf
+AddCharset utf-8 .html .js .css .txt
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache"
+  <If "%{QUERY_STRING} =~ /(^|&)v=[0-9a-f]+(&|$)/">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  Header always set Cache-Control "no-store" "expr=%{REQUEST_STATUS} >= 400"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'self'"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "no-referrer"
+</IfModule>

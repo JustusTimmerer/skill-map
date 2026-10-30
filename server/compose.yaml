@@ -1,0 +1,304 @@
+# The stack of stages b and c: PostgreSQL, the app, a reverse proxy with TLS, and mailpit for local mail.
+# Values come from server/.env (copy .env.example). See README.md.
+# The images of app and tests have no fixed name: Compose names them after the project (-p), so that two
+# stacks of different checkouts on one computer never share an image.
+name: skill-map-server
+
+# Docker keeps the output of each container in a file. These limits rotate it: at most 5 files of 10 MB each.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+# The database of the app. The app connects as the role of db-setup, without admin rights (README.md, "Database roles").
+x-database: &database
+  PGHOST: db
+  PGPORT: "5432"
+  PGDATABASE: ${POSTGRES_DB:-skillmap}
+
+# The connection as the admin role of the postgres image (POSTGRES_USER). Only db-setup and the tests use it.
+x-admin: &admin
+  <<: *database
+  PGUSER: ${POSTGRES_USER:-skillmap}
+  PGPASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in server/.env}
+
+# The rights of every container (README.md, "Container rights"): no process gains a right through a setuid program or a
+# file capability, no process has a capability that its service does not add itself, and nobody can change the root
+# file system. Each service names the folders that it writes: a volume or a tmpfs.
+x-hardened: &hardened
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: [ALL]
+  read_only: true
+
+# The user of the proxy. The Caddy image has no user of its own, so the proxy runs with this number, and proxy-setup gives
+# the volumes of the proxy to it.
+x-proxy-user: &proxy-user "10002:10002"
+
+services:
+  db:
+    image: &postgres postgres:17.11-alpine3.23@sha256:9ea644da56f1a82283b173fa38a316636fe7c538991a8ae41998cd3765434991
+    # The image runs as its user postgres. That user owns the data folder, so PostgreSQL needs no capability.
+    <<: *hardened
+    user: postgres
+    tmpfs:
+      - /var/run/postgresql
+      - /tmp
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-skillmap}
+      POSTGRES_USER: ${POSTGRES_USER:-skillmap}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in server/.env}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+    logging: *logging
+    networks: [backend]
+
+  # A one-shot job on every start: it creates or updates the role of the app and gives it the database (db-setup.sql).
+  # The password of the role is POSTGRES_APP_PASSWORD. Without it, db-setup makes a random password once and keeps it in
+  # the volume db_app_password. Each run then writes the password file of the app (pgpass), which only the user of the
+  # app can read. db-setup runs as root with only the capability CHOWN, because it gives that file to the user of the app.
+  db-setup:
+    image: *postgres
+    <<: *hardened
+    user: "0:0"
+    cap_add: [CHOWN]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *admin
+      POSTGRES_APP_USER: ${POSTGRES_APP_USER:-skillmap_app}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:-}
+      # The user of the app in its image (Dockerfile, useradd --uid 10001).
+      APP_UID: "10001"
+    volumes:
+      - ./db-setup.sql:/db-setup.sql:ro
+      - db_app_password:/run/app-db
+    # The health check of db can pass while the image still sets up a new database. So wait until the server answers
+    # over the network.
+    command:
+      - sh
+      - -c
+      - |
+        set -eu
+        tries=0
+        until pg_isready -q; do
+          tries=$$((tries + 1)); [ $$tries -lt 60 ] || { echo "db-setup: the database does not answer"; exit 1; }
+          sleep 1
+        done
+        umask 077
+        cd /run/app-db
+        if [ -z "$$POSTGRES_APP_PASSWORD" ]; then
+          if [ ! -s password ]; then
+            tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 40 > password.new
+            [ "$$(wc -c < password.new | tr -d " ")" = 40 ] || { echo "db-setup: no random password"; exit 1; }
+            mv -f password.new password
+            echo "db-setup: made a new password for the role of the app"
+          fi
+          POSTGRES_APP_PASSWORD=$$(cat password)
+          export POSTGRES_APP_PASSWORD
+        elif [ "$$POSTGRES_APP_PASSWORD" = "$$PGPASSWORD" ]; then
+          echo "db-setup: POSTGRES_APP_PASSWORD is the password of the admin role. Leave it empty, or give it a value of its own."
+          exit 1
+        fi
+        psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 -f /db-setup.sql
+        # The password file of libpq (PGPASSFILE of the app). A backslash and a colon get a backslash before them.
+        escape() { printf '%s' "$$1" | sed 's/[\\:]/\\&/g'; }
+        printf '*:*:*:%s:%s\n' "$$(escape "$$POSTGRES_APP_USER")" "$$(escape "$$POSTGRES_APP_PASSWORD")" > pgpass.new
+        chown "$$APP_UID:$$APP_UID" pgpass.new
+        mv -f pgpass.new pgpass
+    restart: "no"
+    logging: *logging
+    networks: [backend]
+
+  app:
+    build:
+      context: .
+      target: app
+    depends_on:
+      db:
+        condition: service_healthy
+      db-setup:
+        condition: service_completed_successfully
+    # The image runs as its user app (uid 10001), with no capability.
+    <<: *hardened
+    tmpfs:
+      - /tmp
+    environment:
+      <<: *database
+      PGUSER: ${POSTGRES_APP_USER:-skillmap_app}
+      # The password of the role comes from the file of db-setup. The app never gets the password of the admin role.
+      PGPASSFILE: /run/app-db/pgpass
+      BASE_URL: ${BASE_URL:?set BASE_URL in server/.env}
+      BASE_DOMAIN: ${BASE_DOMAIN:-}
+      APP_ENV: ${APP_ENV:-production}
+      TRUSTED_PROXIES: ${PROXY_IP:-10.213.97.10}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_SECURITY: ${SMTP_SECURITY:-none}
+      MAIL_FROM: ${MAIL_FROM:-}
+      SESSION_DAYS: ${SESSION_DAYS:-30}
+      SESSION_IDLE_DAYS: ${SESSION_IDLE_DAYS:-7}
+      MAX_MAPS_PER_OWNER: ${MAX_MAPS_PER_OWNER:-50}
+      MAX_TEAMS_PER_USER: ${MAX_TEAMS_PER_USER:-20}
+      HANDLE_HOLD_DAYS: ${HANDLE_HOLD_DAYS:-180}
+      RATE_LIMIT_LOGIN_IP: ${RATE_LIMIT_LOGIN_IP:-20/900}
+      RATE_LIMIT_LOGIN_ACCOUNT: ${RATE_LIMIT_LOGIN_ACCOUNT:-10/900}
+      RATE_LIMIT_REGISTER_IP: ${RATE_LIMIT_REGISTER_IP:-10/3600}
+      RATE_LIMIT_REGISTER_ACCOUNT: ${RATE_LIMIT_REGISTER_ACCOUNT:-3/3600}
+      RATE_LIMIT_RESET_IP: ${RATE_LIMIT_RESET_IP:-10/3600}
+      RATE_LIMIT_RESET_ACCOUNT: ${RATE_LIMIT_RESET_ACCOUNT:-3/3600}
+      RATE_LIMIT_INVITE_USER: ${RATE_LIMIT_INVITE_USER:-20/3600}
+      RATE_LIMIT_INVITE_EMAIL: ${RATE_LIMIT_INVITE_EMAIL:-3/3600}
+      RATE_LIMIT_PASSWORD_CHECK_IP: ${RATE_LIMIT_PASSWORD_CHECK_IP:-600/600}
+      # The site of npm run build:selfhost: the map page of the server and the start page.
+      PAGE_FILE: /srv/site/server-map.html
+      START_FILE: /srv/site/index.html
+    volumes:
+      - ${SITE_ROOT:-../dist/selfhost}:/srv/site:ro
+      - db_app_password:/run/app-db:ro
+    restart: unless-stopped
+    logging: *logging
+    networks: [backend]
+
+  # A one-shot job before each start of the proxy: it gives the volumes of the proxy to the user of the proxy. A new
+  # volume belongs to root, and so do the files of a proxy that ran as root before. CHOWN changes the owner, and
+  # DAC_READ_SEARCH lets it walk through the folders of the proxy, which only their owner can open.
+  proxy-setup:
+    image: &caddy ${PROXY_IMAGE:-caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f}
+    <<: *hardened
+    user: "0:0"
+    cap_add: [CHOWN, DAC_READ_SEARCH]
+    network_mode: none
+    entrypoint: ["chown", "-R", "-h", *proxy-user, "/data", "/config"]
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: "no"
+    logging: *logging
+
+  proxy:
+    # PROXY_IMAGE: a Caddy image with the DNS module of the DNS provider, for TLS_MODE=dns (README.md, "Subdomains").
+    image: *caddy
+    # Caddy runs as an ordinary user. The binary of the image carries the file capability NET_BIND_SERVICE, so that it can
+    # bind 80 and 443. Linux starts such a binary only when that capability is in the bounding set, so cap_add names it,
+    # and Caddy runs with this one capability. A Caddy image of your own can lack the file capability. For it, the sysctl
+    # lets every user of the container bind a port below 1024 (the default of Docker since version 20.10).
+    <<: *hardened
+    user: *proxy-user
+    cap_add: [NET_BIND_SERVICE]
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    tmpfs:
+      - /tmp
+    # The proxy needs no healthy app: the files of the site (stage a) work without it, and the routes of the app answer
+    # 502 until the app runs (README.md, "Update").
+    depends_on:
+      proxy-setup:
+        condition: service_completed_successfully
+      app:
+        condition: service_started
+        required: false
+    # Caddy listens on the same ports inside the container as on the host. So its Alt-Svc header names the UDP port of
+    # HTTP/3 that the host publishes.
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTP_PORT:-8080}:${HTTP_PORT:-8080}"
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTPS_PORT:-8443}:${HTTPS_PORT:-8443}"
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTPS_PORT:-8443}:${HTTPS_PORT:-8443}/udp"
+    environment:
+      HTTP_PORT: ${HTTP_PORT:-8080}
+      HTTPS_PORT: ${HTTPS_PORT:-8443}
+      BASE_URL: ${BASE_URL:?set BASE_URL in server/.env}
+      SITE_ADDRESS: ${SITE_ADDRESS:-it-skills.localhost}
+      USER_SITE_ADDRESS: ${USER_SITE_ADDRESS:-*.it-skills.localhost}
+      USER_SITES: ${USER_SITES:-users.caddy}
+      WWW_REDIRECT: ${WWW_REDIRECT:-off}
+      TLS_MODE: ${TLS_MODE:-internal}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+      DNS_PROVIDER: ${DNS_PROVIDER:-}
+      DNS_API_TOKEN: ${DNS_API_TOKEN:-}
+    volumes:
+      - ./proxy:/etc/caddy:ro
+      - ${SITE_ROOT:-../dist/selfhost}:/srv/site:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    logging: *logging
+    networks:
+      backend:
+        ipv4_address: ${PROXY_IP:-10.213.97.10}
+
+  mailpit:
+    image: axllent/mailpit:v1.31.6@sha256:23fe39e81bde596a918000b3135c0f85dc8bb4c9ea6be274b051143f3e300387
+    profiles: [local]
+    # The image has no user of its own. Mailpit keeps the mails in a database in /tmp.
+    <<: *hardened
+    user: "65534:65534"
+    tmpfs:
+      - /tmp
+    ports:
+      - "127.0.0.1:${MAILPIT_PORT:-8025}:8025"
+    restart: unless-stopped
+    logging: *logging
+    networks: [backend]
+
+  tests:
+    build:
+      context: .
+      target: test
+    profiles: [test]
+    # The proxy no longer waits for the app, so the tests wait for both.
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+      app:
+        condition: service_healthy
+      proxy:
+        condition: service_started
+    # Root with only DAC_READ_SEARCH: the tests read the root certificate of the proxy and the password file of the app,
+    # which belong to the users of those services.
+    <<: *hardened
+    cap_add: [DAC_READ_SEARCH]
+    tmpfs:
+      - /tmp
+    environment:
+      <<: *admin
+      TEST_DATABASE: ${POSTGRES_DB:-skillmap}_test
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      MAILPIT_URL: http://mailpit:8025
+      STACK_URL: https://proxy:${HTTPS_PORT:-8443}
+      STACK_HTTPS_PORT: ${HTTPS_PORT:-8443}
+      STACK_BASE_URL: ${BASE_URL}
+      STACK_SITE_HOST: ${SITE_ADDRESS:-it-skills.localhost}
+      STACK_BASE_DOMAIN: ${BASE_DOMAIN:-}
+      STACK_CA_FILE: /caddy-data/caddy/pki/authorities/local/root.crt
+      APP_PASSFILE: /run/app-db/pgpass
+      DEPLOY_FILE: /srv/selfhost/DEPLOY.md
+    volumes:
+      - caddy_data:/caddy-data:ro
+      - db_app_password:/run/app-db:ro
+      - ../selfhost/DEPLOY.md:/srv/selfhost/DEPLOY.md:ro
+    networks: [backend]
+
+networks:
+  backend:
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET:-10.213.97.0/24}
+
+volumes:
+  db_data:
+  db_app_password:
+  caddy_data:
+  caddy_config:

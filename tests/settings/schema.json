@@ -1,0 +1,47 @@
+{
+  "about": "The keys of each version of the values format of the force menu of the editor page (SPRING_SCHEMA in skills/forces.js). top: the setting keys at the top level. lines: the setting keys of each line mode under \"lines\". Every version also has \"at\", the start points of the areas. Version 1 has no \"lines\": its line values are at the top level. When the keys of SPEC change, raise SPRING_SCHEMA, add a step to SPRING_STEPS and add the new version here.",
+  "versions": {
+    "1": {
+      "since": "the flat values line before merge request !13",
+      "top": ["fixed", "seed", "ball", "areaCharge", "likeArea", "hold", "room", "roomEdge", "categoryPull", "categoryRest", "groupCharge",
+        "likeGroup", "likeGroupCross", "separation", "clusterGap", "reachCap", "skillHold", "skillRest", "skillRestLabel", "cohesion", "skillCharge",
+        "likeSkill", "likeSkillCross", "pull", "rest", "areaScale", "groupScale", "skillScale", "showBridges", "lineMode",
+        "drawnBridges", "crossAreaOnly", "bridgeColorLight", "bridgeColorDark", "widthExp", "bridgeWidthMin", "bridgeWidthMax", "bridgeOpacityMin",
+        "bridgeOpacityMax", "bridgeBend", "showExperience", "experienceYears", "ageingStep", "ageingPerStep", "collide", "collideLabel",
+        "ticks", "friction", "range", "stepLabels", "stepUntangle", "lopsided", "clearance", "stepSidestep"],
+      "lines": [],
+      "retired": ["showAreaLinks", "areaLinkWidth", "showSkillLinks", "skillLinkWidth", "treeBend", "bridgePerCategory",
+        "showUseLines", "useLines", "useColorLight", "useColorDark", "useOpacity", "useLineWidth", "useBend"]
+    },
+    "2": {
+      "since": "merge request !13: the line values of each mode under \"lines\"",
+      "top": ["fixed", "seed", "ball", "areaCharge", "likeArea", "hold", "room", "roomEdge", "categoryPull", "categoryRest", "groupCharge",
+        "likeGroup", "likeGroupCross", "separation", "clusterGap", "reachCap", "skillHold", "skillRest", "skillRestLabel", "cohesion", "skillCharge",
+        "likeSkill", "likeSkillCross", "pull", "rest", "areaScale", "groupScale", "skillScale", "showBridges", "lineMode",
+        "showExperience", "experienceYears", "ageingStep", "ageingPerStep", "collide", "collideLabel",
+        "ticks", "friction", "range", "stepLabels", "stepUntangle", "lopsided", "clearance", "stepSidestep"],
+      "lines": ["drawnBridges", "crossAreaOnly", "bridgeColorLight", "bridgeColorDark", "widthExp", "bridgeWidthMin", "bridgeWidthMax",
+        "bridgeOpacityMin", "bridgeOpacityMax", "bridgeBend"]
+    },
+    "3": {
+      "since": "merge requests !14 and !15: standardLinks at the top level, lineGradient in each mode",
+      "top": ["fixed", "seed", "ball", "areaCharge", "likeArea", "hold", "room", "roomEdge", "categoryPull", "categoryRest", "groupCharge",
+        "likeGroup", "likeGroupCross", "separation", "clusterGap", "reachCap", "skillHold", "skillRest", "skillRestLabel", "cohesion", "skillCharge",
+        "likeSkill", "likeSkillCross", "standardLinks", "pull", "rest", "areaScale", "groupScale", "skillScale", "showBridges", "lineMode",
+        "showExperience", "experienceYears", "ageingStep", "ageingPerStep", "collide", "collideLabel",
+        "ticks", "friction", "range", "stepLabels", "stepUntangle", "lopsided", "clearance", "stepSidestep"],
+      "lines": ["drawnBridges", "crossAreaOnly", "bridgeColorLight", "bridgeColorDark", "lineGradient", "widthExp", "bridgeWidthMin", "bridgeWidthMax",
+        "bridgeOpacityMin", "bridgeOpacityMax", "bridgeBend"]
+    },
+    "4": {
+      "since": "the switch Standard-Skills: standardSkills at the top level in place of standardLinks",
+      "top": ["fixed", "seed", "ball", "areaCharge", "likeArea", "hold", "room", "roomEdge", "categoryPull", "categoryRest", "groupCharge",
+        "likeGroup", "likeGroupCross", "separation", "clusterGap", "reachCap", "standardSkills", "skillHold", "skillRest", "skillRestLabel", "cohesion",
+        "skillCharge", "likeSkill", "likeSkillCross", "pull", "rest", "areaScale", "groupScale", "skillScale", "showBridges", "lineMode",
+        "showExperience", "experienceYears", "ageingStep", "ageingPerStep", "collide", "collideLabel",
+        "ticks", "friction", "range", "stepLabels", "stepUntangle", "lopsided", "clearance", "stepSidestep"],
+      "lines": ["drawnBridges", "crossAreaOnly", "bridgeColorLight", "bridgeColorDark", "lineGradient", "widthExp", "bridgeWidthMin", "bridgeWidthMax",
+        "bridgeOpacityMin", "bridgeOpacityMax", "bridgeBend"]
+    }
+  }
+}

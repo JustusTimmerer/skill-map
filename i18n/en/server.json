@@ -1,0 +1,8 @@
+{
+  "server.embedMissing.title": { "text": "Map not found", "note": "Title of the page of an embed address without a map, in a frame on another site (server/app/pages.py)." },
+  "server.embedMissing.text": { "text": "Not found. This map does not exist, or it is no longer shared.", "note": "The only text of the page of an embed address without a map. It says the same for every reason, so that nobody learns whether a private map exists." },
+  "server.fallback.missing": { "text": "The page of the map is not installed on this server yet (PAGE_FILE is missing).", "note": "The map page of a server without the page file of the build. PAGE_FILE is the name of a setting: keep it." },
+  "server.fallback.data": { "text": "The data is at", "note": "The map page of a server without the page file: the words before the address of the data of the map, which follows as a link." },
+  "server.list.lead": { "text": "Public maps", "note": "The page of the public maps of a user or a team: the line between its name and the list of its maps." },
+  "server.list.empty": { "text": "There are no public maps here yet.", "note": "The page of the public maps of a user or a team, when there are none." }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "skill-map",
+  "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "description": "Skill-Map: skills as a network of areas, categories, stations and projects. A static site with an editor, and an optional server with accounts and teams.",
+  "scripts": {
+    "build": "node build_selfhost.js",
+    "check:texts": "node i18n/tools/check.js",
+    "test": "node build_selfhost.js && node i18n/tools/check.js && node tests/e2e/all.js --site",
+    "test:settings": "node tests/settings/run.js",
+    "test:e2e": "node tests/e2e/all.js",
+    "test:browser": "node tests/e2e/all.js --site",
+    "build:selfhost": "node build_selfhost.js",
+    "test:selfhost": "node build_selfhost.js && node tests/selfhost/run.js",
+    "serve:selfhost": "node build_selfhost.js && node tests/selfhost/server.js dist/selfhost 8080",
+    "test:server": "node build_selfhost.js && node tests/server/run.js",
+    "test:release": "node build_selfhost.js && node tests/release/run.js"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

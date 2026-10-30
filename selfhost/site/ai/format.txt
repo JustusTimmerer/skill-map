@@ -1,0 +1,131 @@
+Skill-Map: how to make a map from a CV
+======================================
+
+This text is for an AI tool that makes a Skill-Map for a person, for example from a CV. The Skill-Map is a website that
+shows skills as a network. It sorts skills into areas and categories, and it shows at which stations (employers,
+education, private projects) and in which projects a person used them. The website has no server data. A map lives in
+the browser of the person, and the map file is its safe copy.
+
+You make one JSON file, the map file. The person then opens it on the start page of the site. If you can run JavaScript
+on the start page, you can store the map yourself (see "Load the map" below).
+
+Rules for the content
+---------------------
+
+- Use only what the person gave you: the CV, other documents, or answers. Do not invent an employer, a date, a project
+  or a skill. If a fact is missing, leave the field empty or ask the person.
+- Write the names in the language of the CV. The site shows them as they are.
+- Think of 4 to 7 areas, for example software development, data, infrastructure, AI, leadership, a domain of work.
+  Give each area 1 to 5 categories (one is fine for a small area) and each category the skills that fit. A map with 40 to 150 skills works well.
+- A skill is one named thing: a language, a tool, a method, a domain. "Python" and "Scrum" are skills. "Worked on many
+  projects" is not.
+- Rate each skill: 3 very good, 2 good, 1 basic, 0 not rated, -1 used with AI help but without own routine (use -1 only
+  when the person says so, or the CV shows work done with an AI tool in a skill that the person does not know well). Rate from
+  the evidence of the CV (years, depth, tasks). If you do not know, use 1 or ask. Never give 3 to a skill that the CV
+  only names.
+- A station is a place where skills grew: an employer, a school or a degree, a private project. A skill lists the
+  stations where the person used it in "places".
+- A private project is a station of kind "Privates Projekt". Skills list it in "places". To show it with its skills in the
+  project list, add a project with station "PRIVAT" and the same name as that station.
+- A project is a piece of work at a station. It lists the skills that it used. Projects are optional. A map with
+  stations and without projects is valid.
+- Leave out the documents "configs" and "settings". The page then uses its defaults.
+
+The file
+--------
+
+One JSON object. All text is UTF-8.
+
+{
+  "format": "it-skills-map",
+  "schema": 1,
+  "title": "Skill-Atlas of <name>",
+  "collections": {
+    "areas":    { "<id>": { "name": "...", "color": "#2c5fc4", "at": [-150, -70], "order": 0 } },
+    "groups":   { "<id>": { "name": "...", "area": "<area id>", "order": 0 } },
+    "stations": { "<id>": { "name": "...", "short": "", "kind": "Arbeitgeber", "when": "03.2018 - 08.2022", "months": 54, "note": "...", "order": 0 } },
+    "skills":   { "<id>": { "name": "...", "group": "<group id>", "rating": 2, "places": ["<station id>"], "order": 0 } },
+    "projects": { "<id>": { "name": "...", "station": "<station id or PRIVAT>", "base": false, "order": 0, "when": "", "skills": ["<skill name>"] } }
+  }
+}
+
+Each collection is an object from a document id to a document. See ai/example.it-skills-map.json for a small complete
+file.
+
+areas
+  name    text, the name of the area.
+  color   text, "#rrggbb". Give each area its own color, with enough contrast on a dark and a light background.
+  at      [x, y], the start point of the area on the map, numbers from about -400 to 400. Spread the areas out, for
+          example on a circle. Optional: without it the page puts the areas on a ring.
+  order   number, the order of the areas.
+
+groups (the categories)
+  name    text.
+  area    the id of its area.
+  order   number.
+
+stations
+  name    text, the full name.
+  short   text, a short name, or "" for the full name.
+  kind    one of "Arbeitgeber" (employer), "Ausbildung" (education), "Privates Projekt" (private project). Write these
+          three words exactly, in German, also in an English map.
+  when    text, the period: "03.2013 - 10.2019" (month and year), "2005 - 2010" (years), "seit 05.2026" (since, runs to
+          today), or "" for no date. Use a hyphen or an en dash.
+  months  number, the months of active use. It fills the experience ring. Use the length of the period. For a period that
+          runs to today, write "seit MM.YYYY" and count the months to today. If you do not know today's date, ask.
+  note    text, one line about the station.
+  order   number.
+
+skills
+  name    text, unique in the map.
+  group   the id of its category.
+  rating  -1, 0, 1, 2 or 3 as above.
+  places  list of station ids. A skill without a station is valid.
+  order   number.
+
+projects
+  name    text.
+  station the id of its station, or "PRIVAT" for a private project.
+  base    false. (true marks the base stack of a station, without lines.)
+  order   whole number, 0 or more, the number of the project in its station.
+  when    text, the period of the project, written like stations.when, or "" for the period of its station. Never a
+          duration such as "6 months".
+  skills  list of skill names. Each name is the name of a skill in "skills".
+
+Ids
+---
+
+Each document id has 1 to 200 characters. It has no "/" and no control character. Use short ASCII slugs.
+  areas      ^[a-z][a-z0-9_-]{0,39}$                   for example "dev", "data"
+  groups     ^[a-z0-9][a-z0-9_-]{0,119}$               for example "dev-languages"
+  stations   ^[A-Za-z][A-Za-z0-9_-]{0,39}$             for example "ACME". It must not end in a small "i" and must not be "PRIVAT".
+  skills     any id of the rule above, for example "python"
+  projects   the same.
+
+Load the map
+------------
+
+Way 1: the person opens the file.
+  Save the JSON as "<title>.it-skills-map.json". On the start page of the site, the person presses "Open map file" and
+  picks it. The site checks the file and opens the map. It tells the person what is wrong, if anything.
+
+Way 2: you run JavaScript on the start page (index.html).
+  The page offers window.SkillMap.
+    window.SkillMap.validate(map)        checks the map and stores nothing
+    window.SkillMap.importMap(map)       checks the map and stores it as a new map of this browser
+  "map" is the text of the file or the parsed object. Both calls answer an object:
+    { ok: true, id, url, title, counts, warnings }   or   { ok: false, error }
+  "error" says why the file is refused. "warnings" lists links that are wrong although the file is valid, for example a
+  category of a missing area, or a project that names a skill which does not exist. Fix every warning and call again.
+  Then open "url" in the window. importMap(map, { open: true }) opens it for you. The map stays in this browser. The
+  person can export it from the page.
+  Open the start page first. Do not call the functions on a map page.
+
+Check before you answer
+-----------------------
+
+- Every "group" of a skill is an id in groups, and every "area" of a group is an id in areas.
+- Every station id in "places" and every "station" of a project is an id in stations (or PRIVAT).
+- Every name in the "skills" list of a project is the name of a skill.
+- No skill name appears twice. No id breaks the rules above.
+- You made no claim about the person that the documents do not support. Tell the person what you assumed.

@@ -1,0 +1,103 @@
+# The reverse proxy: serves the static site from /srv/site and passes the routes of the app to it.
+# Every value comes from the environment of the proxy service in compose.yaml (see README.md).
+{
+	# The local CA of "tls internal" stays in the data volume; do not try to install it in the container.
+	skip_install_trust
+	# Caddy listens on the ports of the host (compose.yaml), so that its Alt-Svc header names the UDP port of HTTP/3 that
+	# the host publishes.
+	http_port {$HTTP_PORT:80}
+	https_port {$HTTPS_PORT:443}
+}
+
+# TLS_MODE picks one of these three snippets.
+# internal: a certificate from the local CA of Caddy, for names below .localhost.
+# A wildcard needs two labels after the star: *.it-skills.localhost works, *.localhost does not.
+(tls-internal) {
+	tls internal
+}
+
+# acme: a public certificate through the HTTP challenge. It cannot cover a wildcard.
+(tls-acme) {
+	tls {$ACME_EMAIL}
+	header Strict-Transport-Security "max-age=31536000"
+}
+
+# dns: a public certificate through the DNS challenge, also for the wildcard of the subdomains.
+# It needs a Caddy build with the DNS module of the DNS provider (see README.md).
+(tls-dns) {
+	tls {$ACME_EMAIL} {
+		dns {$DNS_PROVIDER} {$DNS_API_TOKEN}
+	}
+	header Strict-Transport-Security "max-age=31536000"
+}
+
+(common) {
+	encode zstd gzip
+	request_body {
+		max_size 10MB
+	}
+	header {
+		X-Content-Type-Options nosniff
+		-Server
+	}
+	# No browser keeps an error: a missing file, or a route of the app while the app does not run. During an update a
+	# page can ask for a file that is not there yet, and with the cache rule of an address with a version the browser
+	# would keep that 404 for a year.
+	handle_errors {
+		header Cache-Control no-store
+		header -Server
+	}
+}
+
+(to-app) {
+	reverse_proxy app:8000
+}
+
+# The files of the site, with the Content-Security-Policy of the site: the meta tag of each page (build_selfhost.js) and
+# SITE_POLICY of the app (server/app/pages.py) hold the same policy, and server/tests/test_stack.py compares them. No
+# other site may frame the files: only the embed view of the app (/e/...) allows that.
+(static-site) {
+	root * /srv/site
+	header {
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'self'"
+		X-Frame-Options SAMEORIGIN
+	}
+	# The cache rules of the site (selfhost/DEPLOY.md). The build gives each address of a script, a style or an image a
+	# version (?v=<hash of the content>, build_selfhost.js), so such an address never changes its content: the browser
+	# keeps it for a year, but only when the file exists. A missing file is an error, and the browser keeps no error
+	# (handle_errors in "common"). The browser checks every other file again on each use, the pages too, so an update
+	# reaches the visitor at once.
+	@versioned {
+		query v=*
+		file
+	}
+	header @versioned Cache-Control "public, max-age=31536000, immutable"
+	@unversioned not query v=*
+	header @unversioned Cache-Control "no-cache"
+	file_server
+}
+
+# The main domain: the app for the start page (it adds the account of the browser to the static page),
+# the API, the share links, the embed views, the account page and the addresses of the owners: /<handle> and
+# /<handle>/<slug>, every path of one or two names without a dot in the characters of handles and slugs, also with a
+# "/" at the end, which the app answers with a 308 to the address without it. The app answers an unknown handle with its
+# 404 page. The static site serves the rest: each of its files has a dot or lies
+# below a folder of the site, and no handle has the name of such a folder (RESERVED in server/app/security.py).
+{$SITE_ADDRESS:it-skills.localhost} {
+	import tls-{$TLS_MODE:internal}
+	import common
+	@app path / /index.html /api /api/* /s/* /e/* /account /account/*
+	handle @app {
+		import to-app
+	}
+	@owner path_regexp owner ^/[a-z0-9-]+(/[a-z0-9-]+)?/?$
+	handle @owner {
+		import to-app
+	}
+	handle {
+		import static-site
+	}
+}
+
+# The subdomains <handle>.<domain>. USER_SITES=none.caddy turns them off.
+import {$USER_SITES:users.caddy}

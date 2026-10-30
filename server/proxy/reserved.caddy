@@ -1,0 +1,5 @@
+# The names below the domain that are no user site: RESERVED of server/app/security.py, one name each, in a regular
+# expression of the Host header. users.caddy imports this matcher and sends every path of such a host to the app, which
+# redirects www to the main domain with 308 and answers every other name with 404. build_selfhost.js stops the build
+# when this list and RESERVED differ.
+@reserved header_regexp reserved Host (?i)^(?:about|abuse|account|accounts|admin|agb|ai|api|app|assets|autoconfig|autodiscover|blog|cdn|contact|datenschutz|demo|dev|dns|docs|edit|embed|example|ftp|help|hostmaster|imap|impressum|imprint|index|it-skills|itskills|kontakt|konto|license|llms|login|logout|mail|map|mx|new|no-reply|noreply|ns|ns1|ns2|pop|pop3|postmaster|privacy|public|register|root|s|security|server-map|settings|sftp|share|shared|signup|smtp|ssh|staging|static|status|support|system|terms|test|u|user|users|vendor|webmail|www)\.

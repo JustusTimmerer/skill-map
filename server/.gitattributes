@@ -1,0 +1,8 @@
+# The files of the server go into Linux containers, partly as mounts. Keep LF on every checkout.
+* text=auto eol=lf
+
+# Vendored files stay byte-identical to their published sources.
+app/zxcvbn-de/*.json -text
+app/zxcvbn-de/*.txt -text
+app/zxcvbn-de/NOTICE.md -text
+app/zxcvbn-de/THIRD_PARTY_LICENSES.md -text

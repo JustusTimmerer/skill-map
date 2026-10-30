@@ -1,0 +1,10 @@
+* text=auto
+
+*.sh text eol=lf
+.githooks/* text eol=lf
+
+# Vendored files stay byte-identical to their published sources.
+selfhost/vendor/** -text
+
+*.png binary
+*.woff2 binary

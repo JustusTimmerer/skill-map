@@ -1,0 +1,41 @@
+{
+  "format": "it-skills-map",
+  "schema": 1,
+  "title": "Example Skill-Atlas",
+  "collections": {
+    "areas": {
+      "dev": { "name": "Software development", "color": "#2c5fc4", "at": [-150, -70], "order": 0 },
+      "data": { "name": "Data", "color": "#a96a06", "at": [150, -60], "order": 1 },
+      "lead": { "name": "Leadership", "color": "#7a4fb0", "at": [10, 150], "order": 2 }
+    },
+    "groups": {
+      "dev-lang": { "name": "Languages", "area": "dev", "order": 0 },
+      "dev-tools": { "name": "Tools", "area": "dev", "order": 1 },
+      "data-db": { "name": "Databases", "area": "data", "order": 2 },
+      "data-ana": { "name": "Analysis", "area": "data", "order": 3 },
+      "lead-team": { "name": "Team", "area": "lead", "order": 4 }
+    },
+    "stations": {
+      "FOX": { "name": "Fox & Hound Software GmbH", "short": "Fox & Hound", "kind": "Arbeitgeber", "when": "03.2018 - 08.2022", "months": 54, "note": "Software developer for a booking platform.", "order": 0 },
+      "OWL": { "name": "Owl Analytics AG", "short": "Owl", "kind": "Arbeitgeber", "when": "09.2022 - 06.2026", "months": 46, "note": "Data engineer and team lead.", "order": 1 },
+      "HOME": { "name": "Recipe Planner", "short": "", "kind": "Privates Projekt", "when": "seit 01.2026", "months": 6, "note": "A small web app that plans weekly menus.", "order": 2 }
+    },
+    "skills": {
+      "python": { "name": "Python", "group": "dev-lang", "rating": 3, "places": ["FOX", "OWL", "HOME"], "order": 0 },
+      "typescript": { "name": "TypeScript", "group": "dev-lang", "rating": 2, "places": ["FOX", "HOME"], "order": 1 },
+      "git": { "name": "Git", "group": "dev-tools", "rating": 3, "places": ["FOX", "OWL", "HOME"], "order": 2 },
+      "docker": { "name": "Docker", "group": "dev-tools", "rating": 2, "places": ["OWL", "HOME"], "order": 3 },
+      "postgresql": { "name": "PostgreSQL", "group": "data-db", "rating": 3, "places": ["FOX", "OWL"], "order": 4 },
+      "sqlite": { "name": "SQLite", "group": "data-db", "rating": 1, "places": ["HOME"], "order": 5 },
+      "pandas": { "name": "pandas", "group": "data-ana", "rating": 2, "places": ["OWL"], "order": 6 },
+      "claude-code": { "name": "Claude Code", "group": "dev-tools", "rating": -1, "places": ["HOME"], "order": 7 },
+      "code-review": { "name": "Code review", "group": "lead-team", "rating": 2, "places": ["FOX", "OWL"], "order": 8 },
+      "mentoring": { "name": "Mentoring", "group": "lead-team", "rating": 2, "places": ["OWL"], "order": 9 }
+    },
+    "projects": {
+      "fox-booking-api": { "name": "Booking API", "station": "FOX", "base": false, "order": 0, "when": "", "skills": ["Python", "PostgreSQL", "Git", "Code review"] },
+      "owl-data-platform": { "name": "Data platform", "station": "OWL", "base": false, "order": 0, "when": "", "skills": ["Python", "pandas", "PostgreSQL", "Docker", "Mentoring"] },
+      "home-recipe-planner": { "name": "Recipe Planner", "station": "PRIVAT", "base": false, "order": 0, "when": "seit 01.2026", "skills": ["TypeScript", "SQLite", "Docker", "Claude Code", "Git"] }
+    }
+  }
+}

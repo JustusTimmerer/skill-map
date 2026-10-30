@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--@HEAD@-->
+<meta name="description" content="Skills as a network of areas, categories, stations and projects. Runs in the browser, the server stores nothing." data-i18n-attr="content:start.metaDescription">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <img src="assets/icon.svg" alt="" width="30" height="30">
+    <div><h1>Skill-Map</h1><p data-i18n="start.tagline">Skills as a network of areas, categories, stations and projects</p></div>
+    <div class="language" data-language-picker></div>
+  </div>
+</header>
+<main class="wrap">
+  <div class="top">
+    <section class="card" aria-labelledby="intro-title">
+      <span class="label" id="intro-label" data-i18n="start.introLabel">How it works</span>
+      <h2 id="intro-title" data-i18n="start.introTitle">Your skills as a map</h2>
+      <p class="lead" data-i18n="start.introLead">The Skill-Map sorts your skills into areas and categories and shows at which stations and in which projects you used them. Readers zoom in and filter by station, project and time range.</p>
+      <p data-i18n="start.introStoreText"><strong id="intro-store" data-i18n="start.introStore">The server stores nothing.</strong> Your maps live only in this browser. “Export” saves a map as a file, and “Open map file” brings it back, also on another device.</p>
+      <div class="actions">
+        <button type="button" class="primary" id="new-default" data-i18n="start.newDefault">New map from the default set</button>
+        <button type="button" id="new-empty" data-i18n="start.newEmpty">Empty map</button>
+        <button type="button" id="open-file" data-i18n="start.openFile">Open map file</button>
+        <input type="file" id="file-input" accept=".json,application/json" aria-label="Choose a map file" data-i18n-attr="aria-label:start.fileInputLabel" hidden>
+      </div>
+      <p class="message" id="message" role="alert" hidden></p>
+      <p class="muted" data-i18n="start.defaultNote">The default set brings three areas with two categories each and two skills in each category: software development, data and ways of working. You change them and add stations and projects yourself. The empty map starts without areas.</p>
+    </section>
+    <section class="card" aria-labelledby="maps-title">
+      <span class="label" data-i18n="start.mapsLabel">Your maps</span>
+      <h2 id="maps-title" data-i18n="start.mapsTitle">Maps in this browser</h2>
+      <p class="warning" id="storage-warning" data-i18n="start.storageWarning"><strong data-i18n="start.storageWarningTitle">Stored only in this browser.</strong> The browser can lose this storage, for example when you delete site data, in a private window, or when storage runs low. The exported file is the only safe copy. Export your map after each larger change.</p>
+      <ul class="map-list" id="map-list" aria-label="Maps in this browser" data-i18n-attr="aria-label:start.mapListLabel"></ul>
+      <p class="muted" id="map-empty" data-i18n="start.mapsEmpty" hidden>No map in this browser yet. Create a new one or open a map file.</p>
+    </section>
+  </div>
+  <section class="card example" aria-labelledby="example-title">
+    <div class="example-head">
+      <div><span class="label" data-i18n="start.exampleLabel">Example</span><h2 id="example-title" data-i18n="start.exampleTitle">A real map, read-only</h2></div>
+      <a class="button-link small-button" href="example.html" data-i18n="start.exampleOpen">Open the example full size</a>
+    </div>
+    <p class="muted" data-i18n="start.exampleNote">A click on a skill shows where it was used. Filter under “Projects” and with the time range below the panel.</p>
+    <iframe src="example.html" title="Example of a Skill-Map, read-only" data-i18n-attr="title:start.exampleFrameTitle" loading="lazy"></iframe>
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <a href="imprint.html" data-i18n="site.imprintLink">Legal notice</a>
+    <a href="privacy.html" data-i18n="site.privacyLink">Privacy</a>
+    <a href="ai.html" data-i18n="site.aiLink">Make a map with AI</a>
+    <a href="license.txt" data-i18n="site.licenseLink">License</a>
+    <span id="foot-note" data-i18n="start.footNote">No cookies, no tracking, no other servers.</span>
+    <span data-i18n="start.licenses">Licenses: <a href="vendor/licenses/d3-ISC.txt">D3</a>, <a href="vendor/licenses/Archivo-OFL.txt">Archivo</a>, <a href="vendor/licenses/IBM-Plex-Mono-OFL.txt">IBM Plex Mono</a>, <a href="vendor/licenses/Noto-Sans-OFL.txt">Noto Sans</a>, <a href="vendor/licenses/zxcvbn-MIT.txt">zxcvbn</a>, <a href="vendor/licenses/zxcvbn-ts-MIT.txt">zxcvbn-ts</a>, <a href="vendor/licenses/OpenSubtitles-OPUS-ODC-BY.txt">OpenSubtitles (OPUS)</a></span>
+  </div>
+</footer>
+<script src="assets/i18n.js"></script>
+<script src="assets/runtime-local.js"></script>
+<script src="assets/templates.js"></script>
+<script src="assets/account.js"></script>
+<script src="assets/start.js"></script>
+<script src="assets/agent.js"></script>
+</body>
+</html>

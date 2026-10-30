@@ -1,0 +1,5 @@
+# Empty on purpose: with USER_SITES=none.caddy the proxy serves no subdomains.
+# The maps stay reachable under /<handle>/<slug> on the main domain, and each owner under /<handle>.
+# WWW_REDIRECT=on adds the host www.<domain>, which sends every path to the same path on BASE_URL with 308
+# (www-on.caddy). It needs a DNS record and a certificate for www.<domain>. off (the default) adds nothing.
+import www-{$WWW_REDIRECT:off}.caddy

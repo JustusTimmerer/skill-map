@@ -1,0 +1,2802 @@
+{
+  "format": "it-skills-map",
+  "schema": 1,
+  "title": "Skill-Atlas · Alex Beispiel (Demo)",
+  "exportedAt": "2026-10-30T05:33:59Z",
+  "collections": {
+    "areas": {
+      "ai": {
+        "name": "KI & Machine Learning",
+        "color": "#0a8573",
+        "at": [
+          302,
+          76
+        ],
+        "order": 2
+      },
+      "data": {
+        "name": "Daten & Datenbanken",
+        "color": "#a96a06",
+        "at": [
+          -374,
+          -181
+        ],
+        "order": 1
+      },
+      "fach": {
+        "name": "Fachdomäne",
+        "color": "#c0384f",
+        "at": [
+          -32,
+          154
+        ],
+        "order": 4
+      },
+      "infra": {
+        "name": "Infrastruktur & Systeme",
+        "color": "#7a4ca6",
+        "at": [
+          -332,
+          106
+        ],
+        "order": 3
+      },
+      "lead": {
+        "name": "Leitung & Wissenstransfer",
+        "color": "#566170",
+        "at": [
+          363,
+          -184
+        ],
+        "order": 5
+      },
+      "sd": {
+        "name": "Softwareentwicklung",
+        "color": "#2c5fc4",
+        "at": [
+          20,
+          -107
+        ],
+        "order": 0
+      }
+    },
+    "stations": {
+      "AP": {
+        "name": "Agentenpult",
+        "short": "",
+        "kind": "Privates Projekt",
+        "when": "seit 08.2026",
+        "months": 1,
+        "note": "Desktop-Oberfläche für Coding-Agenten mit eingebautem Terminal. Zeigt, welches Modell mit welchen Anweisungen lief.",
+        "order": 8
+      },
+      "AR": {
+        "name": "Regelwerk für Agenten",
+        "short": "",
+        "kind": "Privates Projekt",
+        "when": "06.2026 – 08.2026",
+        "months": 2.7,
+        "note": "Regeln, Skills, Hooks und Prompts für Coding-Agenten.",
+        "order": 7
+      },
+      "BA": {
+        "name": "Belegarchiv",
+        "short": "",
+        "kind": "Privates Projekt",
+        "when": "seit 03.2026",
+        "months": 4,
+        "note": "Dokumentenarchiv mit Desktop-Client, entwickelt in einem agentischen Entwicklungsprozess nach Scrum.",
+        "order": 5
+      },
+      "BDS": {
+        "name": "Hänsel & Gretel Datensysteme GmbH",
+        "short": "Hänsel & Gretel",
+        "kind": "Ausbildung",
+        "when": "09.2009 – 02.2012",
+        "months": 30,
+        "note": "Ausbildung zum Fachinformatiker Anwendungsentwicklung. Java als Hauptsprache, VBA-Entwicklung, erste Schritte mit C#, Arbeit am Auftragssystem eines Handelskunden.",
+        "order": 1
+      },
+      "BK": {
+        "name": "Belegklassifikation",
+        "short": "",
+        "kind": "Privates Projekt",
+        "when": "seit 09.2026",
+        "months": 0.2,
+        "note": "Lokale Belegklassifikation mit eigenem Training, Kalibrierung und menschlicher Prüfung.",
+        "order": 9
+      },
+      "KWA": {
+        "name": "Rotkäppchen Apps GmbH",
+        "short": "Rotkäppchen",
+        "kind": "Arbeitgeber",
+        "when": "09.2018 – 02.2019",
+        "months": 6,
+        "note": "Software Developer. MVC-Anwendungen, Web-APIs, Windows-Dienste, Build- und Deployment-Prozesse.",
+        "order": 3
+      },
+      "NLS": {
+        "name": "Schrödingers Katze Logistiksoftware AG",
+        "short": "Schrödingers Katze",
+        "kind": "Arbeitgeber",
+        "when": "04.2012 – 08.2018",
+        "months": 77,
+        "note": "Softwareentwickler. Technische Leitung des Kundenportals für Speditionen, Datenbankbetrieb im Plattformteam, Anbindung zugekaufter Lager.",
+        "order": 2
+      },
+      "SB": {
+        "name": "SchlankBus",
+        "short": "",
+        "kind": "Privates Projekt",
+        "when": "03.2026",
+        "months": 1.7,
+        "note": "Eigene schlanke Message-Bus-Bibliothek ohne kommerzielle Lizenzabhängigkeit.",
+        "order": 6
+      },
+      "SCH": {
+        "name": "Schule & Studium",
+        "short": "",
+        "kind": "Ausbildung",
+        "when": "2004 – 2009",
+        "months": 60,
+        "note": "Fachgymnasium Technik, danach Studium der Medieninformatik.",
+        "order": 0
+      },
+      "TP": {
+        "name": "Wochenplaner",
+        "short": "",
+        "kind": "Privates Projekt",
+        "when": "09.2026",
+        "months": 0.25,
+        "note": "Desktop-Anwendung zur Wochenplanung: Prototyp an einem Tag.",
+        "order": 10
+      },
+      "WES": {
+        "name": "Perpetuum Mobile Energiesysteme GmbH",
+        "short": "Perpetuum Mobile",
+        "kind": "Arbeitgeber",
+        "when": "05.2019 – 07.2026",
+        "months": 80,
+        "note": "Consultant. Berichtswesen für Netzbetreiber, Backend- und Plattformarbeit, Schulung und Onboarding im Team.",
+        "order": 4
+      }
+    },
+    "groups": {
+      "ai-eng": {
+        "name": "Agentic Engineering",
+        "area": "ai",
+        "order": 6
+      },
+      "ai-gov": {
+        "name": "KI-Governance",
+        "area": "ai",
+        "order": 10
+      },
+      "ai-local": {
+        "name": "Lokale Inferenz",
+        "area": "ai",
+        "order": 9
+      },
+      "ai-ml": {
+        "name": "Machine Learning",
+        "area": "ai",
+        "order": 8
+      },
+      "ai-tools": {
+        "name": "KI-Werkzeuge",
+        "area": "ai",
+        "order": 7
+      },
+      "data-db": {
+        "name": "Datenbanken",
+        "area": "data",
+        "order": 14
+      },
+      "data-docs": {
+        "name": "Dokumentverarbeitung",
+        "area": "data",
+        "order": 16
+      },
+      "data-gov": {
+        "name": "Data Governance",
+        "area": "data",
+        "order": 18
+      },
+      "data-ops": {
+        "name": "Betrieb",
+        "area": "data",
+        "order": 15
+      },
+      "data-reg": {
+        "name": "Reporting",
+        "area": "data",
+        "order": 17
+      },
+      "fach-ins": {
+        "name": "Energiewirtschaft",
+        "area": "fach",
+        "order": 19
+      },
+      "fach-lab": {
+        "name": "Logistik",
+        "area": "fach",
+        "order": 20
+      },
+      "infra-devops": {
+        "name": "DevOps",
+        "area": "infra",
+        "order": 11
+      },
+      "infra-found": {
+        "name": "Grundlagen",
+        "area": "infra",
+        "order": 13
+      },
+      "infra-sys": {
+        "name": "Systeme",
+        "area": "infra",
+        "order": 12
+      },
+      "lead-know": {
+        "name": "Wissenstransfer",
+        "area": "lead",
+        "order": 22
+      },
+      "lead-lead": {
+        "name": "Leitung",
+        "area": "lead",
+        "order": 21
+      },
+      "sd-arch": {
+        "name": "Architektur & Methoden",
+        "area": "sd",
+        "order": 5
+      },
+      "sd-desk": {
+        "name": "Desktop & Integration",
+        "area": "sd",
+        "order": 3
+      },
+      "sd-fe": {
+        "name": "Frontend",
+        "area": "sd",
+        "order": 2
+      },
+      "sd-lang": {
+        "name": "Sprachen",
+        "area": "sd",
+        "order": 0
+      },
+      "sd-net": {
+        "name": ".NET-Backend",
+        "area": "sd",
+        "order": 1
+      },
+      "sd-qa": {
+        "name": "Qualität & Tests",
+        "area": "sd",
+        "order": 4
+      }
+    },
+    "skills": {
+      "active-directory": {
+        "name": "Active Directory",
+        "group": "infra-sys",
+        "rating": 1,
+        "places": [
+          "BDS"
+        ],
+        "order": 136
+      },
+      "adrs": {
+        "name": "ADRs",
+        "group": "sd-arch",
+        "rating": 1,
+        "places": [
+          "BA"
+        ],
+        "order": 56
+      },
+      "agenten-mit-minimalen-rechten": {
+        "name": "Agenten mit minimalen Rechten",
+        "group": "ai-gov",
+        "rating": 2,
+        "places": [
+          "BK",
+          "AR"
+        ],
+        "order": 93
+      },
+      "agentic-sdlc-scrum": {
+        "name": "Agentic SDLC (Scrum)",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "BA"
+        ],
+        "order": 70
+      },
+      "agile-entwicklung": {
+        "name": "Agile Entwicklung",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 61
+      },
+      "anforderungsanalyse": {
+        "name": "Anforderungsanalyse",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 58
+      },
+      "angular": {
+        "name": "Angular",
+        "group": "sd-fe",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 23
+      },
+      "arbeit-nach-sops": {
+        "name": "Arbeit nach SOPs",
+        "group": "lead-lead",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 147
+      },
+      "artifactory": {
+        "name": "Artifactory",
+        "group": "infra-devops",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 128
+      },
+      "asp-net-core": {
+        "name": "ASP.NET Core",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP"
+        ],
+        "order": 10
+      },
+      "asp-net-mvc": {
+        "name": "ASP.NET MVC",
+        "group": "sd-net",
+        "rating": 2,
+        "places": [
+          "KWA",
+          "NLS"
+        ],
+        "order": 20
+      },
+      "audit-trail": {
+        "name": "Audit-Trail",
+        "group": "data-gov",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 118
+      },
+      "automatische-belegerkennung": {
+        "name": "Automatische Belegerkennung",
+        "group": "data-docs",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 112
+      },
+      "azure-devops": {
+        "name": "Azure DevOps",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA"
+        ],
+        "order": 126
+      },
+      "barrierefreiheit-axe": {
+        "name": "Barrierefreiheit (axe)",
+        "group": "sd-qa",
+        "rating": -1,
+        "places": [
+          "TP"
+        ],
+        "order": 50
+      },
+      "belegdruck": {
+        "name": "Belegdruck",
+        "group": "data-docs",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 111
+      },
+      "benchmarkdotnet": {
+        "name": "BenchmarkDotNet",
+        "group": "sd-qa",
+        "rating": 1,
+        "places": [
+          "SB"
+        ],
+        "order": 46
+      },
+      "berechtigungslogik": {
+        "name": "Berechtigungslogik",
+        "group": "data-gov",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 117
+      },
+      "bert-modelle": {
+        "name": "BERT-Modelle",
+        "group": "ai-ml",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 86
+      },
+      "bitbucket": {
+        "name": "Bitbucket",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 127
+      },
+      "bootstrap": {
+        "name": "Bootstrap",
+        "group": "sd-fe",
+        "rating": 1,
+        "places": [
+          "KWA",
+          "NLS"
+        ],
+        "order": 25
+      },
+      "c": {
+        "name": "C#",
+        "group": "sd-lang",
+        "rating": 3,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP",
+          "SB"
+        ],
+        "order": 0,
+        "standard": {
+          "text": "Standard seit Schrödingers Katze in allen Stationen und Projekten, erste Schritte bei Hänsel & Gretel",
+          "since": "NLS"
+        }
+      },
+      "chrome-erweiterung": {
+        "name": "Chrome-Erweiterung",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "TP"
+        ],
+        "order": 36
+      },
+      "ci-cd-pipelines": {
+        "name": "CI/CD-Pipelines",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "SB"
+        ],
+        "order": 130
+      },
+      "claude-code": {
+        "name": "Claude Code",
+        "group": "ai-tools",
+        "rating": 3,
+        "places": [
+          "AR",
+          "TP",
+          "BA",
+          "AP",
+          "BK",
+          "WES"
+        ],
+        "order": 71
+      },
+      "clean-code": {
+        "name": "Clean Code",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 53
+      },
+      "coding-dojo": {
+        "name": "Coding Dojo",
+        "group": "lead-know",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 156
+      },
+      "context-engineering": {
+        "name": "Context Engineering",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "BA",
+          "AR",
+          "AP",
+          "TP",
+          "WES"
+        ],
+        "order": 66
+      },
+      "cqrs": {
+        "name": "CQRS",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "WES",
+          "BA",
+          "SB",
+          "TP"
+        ],
+        "order": 54
+      },
+      "crystal-reports": {
+        "name": "Crystal Reports",
+        "group": "data-reg",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 116
+      },
+      "css": {
+        "name": "CSS",
+        "group": "sd-fe",
+        "rating": 1,
+        "places": [
+          "SCH",
+          "BDS",
+          "KWA",
+          "WES",
+          "TP",
+          "AP"
+        ],
+        "order": 24
+      },
+      "dapper": {
+        "name": "Dapper",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "WES",
+          "BA"
+        ],
+        "order": 14
+      },
+      "datenmaskierung": {
+        "name": "Datenmaskierung",
+        "group": "data-gov",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 119
+      },
+      "datenmigration": {
+        "name": "Datenmigration",
+        "group": "data-db",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 101
+      },
+      "datenmodellierung": {
+        "name": "Datenmodellierung",
+        "group": "data-db",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 100
+      },
+      "datenqualitaet": {
+        "name": "Datenqualität",
+        "group": "data-gov",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 120
+      },
+      "docker": {
+        "name": "Docker",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "AR"
+        ],
+        "order": 121
+      },
+      "dokumentenmanagement": {
+        "name": "Dokumentenmanagement",
+        "group": "data-docs",
+        "rating": 2,
+        "places": [
+          "BDS",
+          "WES",
+          "BA"
+        ],
+        "order": 113
+      },
+      "domain-driven-design": {
+        "name": "Domain-Driven Design",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP"
+        ],
+        "order": 52
+      },
+      "e-mail-integration-smtp": {
+        "name": "E-Mail-Integration (SMTP)",
+        "group": "data-docs",
+        "rating": 1,
+        "places": [
+          "NLS",
+          "KWA"
+        ],
+        "order": 108
+      },
+      "ef-core": {
+        "name": "EF Core",
+        "group": "sd-net",
+        "rating": 2,
+        "places": [
+          "WES",
+          "TP",
+          "BA"
+        ],
+        "order": 13
+      },
+      "electron": {
+        "name": "Electron",
+        "group": "sd-desk",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 33
+      },
+      "elk-stack": {
+        "name": "ELK Stack",
+        "group": "infra-devops",
+        "rating": 1,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 131
+      },
+      "embeddings": {
+        "name": "Embeddings",
+        "group": "ai-ml",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 85
+      },
+      "energiemarkt-reporting": {
+        "name": "Energiemarkt-Reporting",
+        "group": "fach-ins",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 141
+      },
+      "energiewirtschaft": {
+        "name": "Energiewirtschaft",
+        "group": "fach-ins",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 142
+      },
+      "eslint-prettier": {
+        "name": "ESLint & Prettier",
+        "group": "sd-qa",
+        "rating": -1,
+        "places": [
+          "TP",
+          "AP"
+        ],
+        "order": 51
+      },
+      "evaluation-von-ki-agenten": {
+        "name": "Evaluation von KI-Agenten",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "AR"
+        ],
+        "order": 64
+      },
+      "fastreport": {
+        "name": "FastReport",
+        "group": "data-reg",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 114
+      },
+      "fine-tuning": {
+        "name": "Fine-Tuning",
+        "group": "ai-ml",
+        "rating": 1,
+        "places": [
+          "BK"
+        ],
+        "order": 79
+      },
+      "fluentvalidation": {
+        "name": "FluentValidation",
+        "group": "sd-net",
+        "rating": -1,
+        "places": [
+          "BA"
+        ],
+        "order": 16
+      },
+      "git": {
+        "name": "Git",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP",
+          "SB",
+          "AR",
+          "BK"
+        ],
+        "order": 124,
+        "standard": {
+          "text": "Standard seit Schrödingers Katze in allen Stationen und Projekten",
+          "since": "NLS"
+        }
+      },
+      "github-copilot-enterprise": {
+        "name": "GitHub Copilot Enterprise",
+        "group": "ai-tools",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 73
+      },
+      "gitlab": {
+        "name": "GitLab",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "WES",
+          "BA",
+          "TP",
+          "SB",
+          "AP"
+        ],
+        "order": 125
+      },
+      "grafana": {
+        "name": "Grafana",
+        "group": "infra-devops",
+        "rating": 1,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 132
+      },
+      "hardware": {
+        "name": "Hardware",
+        "group": "infra-found",
+        "rating": 1,
+        "places": [
+          "BDS",
+          "SCH"
+        ],
+        "order": 155
+      },
+      "harness-engineering": {
+        "name": "Harness Engineering",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "AR",
+          "TP",
+          "BA",
+          "AP"
+        ],
+        "order": 63
+      },
+      "headless-agenten": {
+        "name": "Headless-Agenten",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "AR",
+          "BK"
+        ],
+        "order": 69
+      },
+      "high-availability": {
+        "name": "High Availability",
+        "group": "data-ops",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 103
+      },
+      "html": {
+        "name": "HTML",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "WES",
+          "KWA",
+          "BDS",
+          "SCH"
+        ],
+        "order": 151
+      },
+      "informatik": {
+        "name": "Informatik",
+        "group": "infra-found",
+        "rating": 1,
+        "places": [
+          "BDS",
+          "SCH"
+        ],
+        "order": 154
+      },
+      "installer": {
+        "name": "Installer",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "TP"
+        ],
+        "order": 39
+      },
+      "integrationstests": {
+        "name": "Integrationstests",
+        "group": "sd-qa",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP"
+        ],
+        "order": 42
+      },
+      "java": {
+        "name": "Java",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "SCH",
+          "BDS"
+        ],
+        "order": 7
+      },
+      "kalibrierung": {
+        "name": "Kalibrierung",
+        "group": "ai-ml",
+        "rating": 2,
+        "places": [
+          "BK",
+          "SCH"
+        ],
+        "order": 78
+      },
+      "kanban": {
+        "name": "Kanban",
+        "group": "sd-arch",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 60
+      },
+      "keycloak": {
+        "name": "Keycloak",
+        "group": "infra-devops",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 129
+      },
+      "ki-leitlinien-im-team": {
+        "name": "KI-Leitlinien im Team",
+        "group": "lead-know",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 150
+      },
+      "klassifikation": {
+        "name": "Klassifikation",
+        "group": "ai-ml",
+        "rating": 2,
+        "places": [
+          "BK"
+        ],
+        "order": 77
+      },
+      "kubernetes": {
+        "name": "Kubernetes",
+        "group": "infra-devops",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 123
+      },
+      "lagerverwaltung-wms": {
+        "name": "Lagerverwaltung (WMS)",
+        "group": "fach-lab",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "BDS"
+        ],
+        "order": 143
+      },
+      "ldap": {
+        "name": "LDAP",
+        "group": "infra-sys",
+        "rating": 2,
+        "places": [
+          "WES",
+          "NLS"
+        ],
+        "order": 138
+      },
+      "legacy-migration": {
+        "name": "Legacy-Migration",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 57
+      },
+      "lizenz-compliance": {
+        "name": "Lizenz-Compliance",
+        "group": "sd-arch",
+        "rating": 2,
+        "places": [
+          "WES",
+          "BK",
+          "SB"
+        ],
+        "order": 62
+      },
+      "logistiksteuerung": {
+        "name": "Logistiksteuerung",
+        "group": "fach-lab",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 144
+      },
+      "mcp": {
+        "name": "MCP",
+        "group": "ai-tools",
+        "rating": 2,
+        "places": [
+          "BA"
+        ],
+        "order": 74
+      },
+      "medieninformatik": {
+        "name": "Medieninformatik",
+        "group": "infra-found",
+        "rating": 1,
+        "places": [],
+        "order": 140
+      },
+      "menschliche-pruefung": {
+        "name": "Menschliche Prüfung",
+        "group": "ai-gov",
+        "rating": 2,
+        "places": [
+          "BK"
+        ],
+        "order": 90
+      },
+      "microservices": {
+        "name": "Microservices",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 12
+      },
+      "ml-modelle-integrieren": {
+        "name": "ML-Modelle integrieren",
+        "group": "ai-ml",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 81
+      },
+      "mock-service-worker": {
+        "name": "Mock Service Worker",
+        "group": "sd-qa",
+        "rating": -1,
+        "places": [
+          "TP",
+          "AP"
+        ],
+        "order": 49
+      },
+      "monitoring": {
+        "name": "Monitoring",
+        "group": "data-ops",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "WES"
+        ],
+        "order": 105
+      },
+      "moq": {
+        "name": "Moq",
+        "group": "sd-qa",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 45
+      },
+      "ms-access": {
+        "name": "MS Access",
+        "group": "data-db",
+        "rating": 1,
+        "places": [
+          "BDS"
+        ],
+        "order": 95
+      },
+      "ms-iis": {
+        "name": "MS IIS",
+        "group": "infra-sys",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 135
+      },
+      "ms-sql-server": {
+        "name": "MS SQL Server",
+        "group": "data-db",
+        "rating": 3,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 94
+      },
+      "mvvm": {
+        "name": "MVVM",
+        "group": "sd-desk",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 30
+      },
+      "net": {
+        "name": ".NET",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP",
+          "SB"
+        ],
+        "order": 9,
+        "standard": {
+          "text": "Standard seit Schrödingers Katze in allen Stationen und Projekten",
+          "since": "NLS"
+        }
+      },
+      "netzwerktechnik-ccna": {
+        "name": "Netzwerktechnik (CCNA)",
+        "group": "infra-found",
+        "rating": 2,
+        "places": [
+          "SCH",
+          "BDS"
+        ],
+        "order": 139
+      },
+      "neuronale-netze-grundlagen": {
+        "name": "Neuronale Netze (Grundlagen)",
+        "group": "ai-ml",
+        "rating": 1,
+        "places": [
+          "WES",
+          "BDS",
+          "SCH"
+        ],
+        "order": 82
+      },
+      "nlog": {
+        "name": "nlog",
+        "group": "sd-net",
+        "rating": 1,
+        "places": [
+          "KWA",
+          "NLS"
+        ],
+        "order": 153
+      },
+      "node-pty-conpty": {
+        "name": "node-pty (ConPTY)",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "AP"
+        ],
+        "order": 37
+      },
+      "nunit": {
+        "name": "NUnit",
+        "group": "sd-qa",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 44
+      },
+      "oauth2-jwt": {
+        "name": "OAuth2 & JWT",
+        "group": "sd-net",
+        "rating": 2,
+        "places": [
+          "KWA",
+          "WES"
+        ],
+        "order": 21
+      },
+      "ocr": {
+        "name": "OCR",
+        "group": "data-docs",
+        "rating": 2,
+        "places": [
+          "BDS",
+          "NLS"
+        ],
+        "order": 106
+      },
+      "ollama": {
+        "name": "Ollama",
+        "group": "ai-local",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 88
+      },
+      "onnx-runtime": {
+        "name": "ONNX Runtime",
+        "group": "ai-local",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 89
+      },
+      "openai-codex": {
+        "name": "OpenAI Codex",
+        "group": "ai-tools",
+        "rating": 2,
+        "places": [
+          "AR"
+        ],
+        "order": 72
+      },
+      "openapi-swagger": {
+        "name": "OpenAPI (Swagger)",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "BA",
+          "AP"
+        ],
+        "order": 18
+      },
+      "oracle": {
+        "name": "Oracle",
+        "group": "data-db",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 96
+      },
+      "orchestrator-agenten": {
+        "name": "Orchestrator-Agenten",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "BK",
+          "BA"
+        ],
+        "order": 68
+      },
+      "outlook-add-in": {
+        "name": "Outlook-Add-in",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "TP"
+        ],
+        "order": 35
+      },
+      "pdf-extraktion": {
+        "name": "PDF-Extraktion",
+        "group": "data-docs",
+        "rating": -1,
+        "places": [
+          "BA"
+        ],
+        "order": 107
+      },
+      "performance-engineering": {
+        "name": "Performance Engineering",
+        "group": "data-ops",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 102
+      },
+      "photino-net": {
+        "name": "Photino.NET",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "TP"
+        ],
+        "order": 34
+      },
+      "php": {
+        "name": "PHP",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "BDS",
+          "SCH"
+        ],
+        "order": 152
+      },
+      "playwright": {
+        "name": "Playwright",
+        "group": "sd-qa",
+        "rating": -1,
+        "places": [
+          "TP",
+          "AP",
+          "BA",
+          "WES"
+        ],
+        "order": 48
+      },
+      "podman": {
+        "name": "Podman",
+        "group": "infra-devops",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 122
+      },
+      "postgresql": {
+        "name": "PostgreSQL",
+        "group": "data-db",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 97
+      },
+      "powershell": {
+        "name": "PowerShell",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA",
+          "WES",
+          "TP"
+        ],
+        "order": 4,
+        "standard": {
+          "text": "Standard seit Hänsel & Gretel in allen Stationen, für kleinere Aufgaben",
+          "since": "BDS"
+        }
+      },
+      "prompt-engineering": {
+        "name": "Prompt Engineering",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "WES",
+          "AR",
+          "BA",
+          "TP"
+        ],
+        "order": 65
+      },
+      "python": {
+        "name": "Python",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "BK",
+          "AR"
+        ],
+        "order": 3
+      },
+      "pytorch": {
+        "name": "PyTorch",
+        "group": "ai-ml",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 83
+      },
+      "react": {
+        "name": "React",
+        "group": "sd-fe",
+        "rating": 1,
+        "places": [
+          "TP",
+          "AP",
+          "BA"
+        ],
+        "order": 22
+      },
+      "release-management": {
+        "name": "Release-Management",
+        "group": "lead-lead",
+        "rating": 3,
+        "places": [
+          "NLS"
+        ],
+        "order": 146
+      },
+      "replikation": {
+        "name": "Replikation",
+        "group": "data-ops",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 104
+      },
+      "reproduzierbare-evaluation": {
+        "name": "Reproduzierbare Evaluation",
+        "group": "ai-gov",
+        "rating": 3,
+        "places": [
+          "AR"
+        ],
+        "order": 92
+      },
+      "review-agenten": {
+        "name": "Review-Agenten",
+        "group": "ai-eng",
+        "rating": 3,
+        "places": [
+          "TP",
+          "AR"
+        ],
+        "order": 67
+      },
+      "schulungen-onboarding": {
+        "name": "Schulungen & Onboarding",
+        "group": "lead-know",
+        "rating": 2,
+        "places": [
+          "WES"
+        ],
+        "order": 149
+      },
+      "scikit-learn": {
+        "name": "scikit-learn",
+        "group": "ai-ml",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 87
+      },
+      "scrum": {
+        "name": "Scrum",
+        "group": "sd-arch",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "WES",
+          "BA"
+        ],
+        "order": 59
+      },
+      "serilog": {
+        "name": "Serilog",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "BA"
+        ],
+        "order": 17
+      },
+      "session-audit": {
+        "name": "Session Audit",
+        "group": "ai-gov",
+        "rating": 2,
+        "places": [
+          "AP"
+        ],
+        "order": 91
+      },
+      "signalr": {
+        "name": "SignalR",
+        "group": "sd-net",
+        "rating": 1,
+        "places": [
+          "WES",
+          "BA"
+        ],
+        "order": 15
+      },
+      "softwarearchitektur": {
+        "name": "Softwarearchitektur",
+        "group": "sd-arch",
+        "rating": 2,
+        "places": [
+          "WES",
+          "BA"
+        ],
+        "order": 55
+      },
+      "spracherkennungs-api": {
+        "name": "Spracherkennungs-API",
+        "group": "ai-tools",
+        "rating": 1,
+        "places": [],
+        "order": 75
+      },
+      "sqlite": {
+        "name": "SQLite",
+        "group": "data-db",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "TP",
+          "BA"
+        ],
+        "order": 98
+      },
+      "ssrs": {
+        "name": "SSRS",
+        "group": "data-reg",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 115
+      },
+      "systemintegration-it-service": {
+        "name": "Systemintegration & IT-Service",
+        "group": "infra-sys",
+        "rating": 2,
+        "places": [
+          "BDS"
+        ],
+        "order": 137
+      },
+      "t-sql": {
+        "name": "T-SQL",
+        "group": "sd-lang",
+        "rating": 3,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 2
+      },
+      "tailwind-css": {
+        "name": "Tailwind CSS",
+        "group": "sd-fe",
+        "rating": -1,
+        "places": [
+          "BA"
+        ],
+        "order": 28
+      },
+      "tanstack-query": {
+        "name": "TanStack Query",
+        "group": "sd-fe",
+        "rating": -1,
+        "places": [
+          "TP",
+          "AP"
+        ],
+        "order": 27
+      },
+      "tauri": {
+        "name": "Tauri",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "AP",
+          "BA"
+        ],
+        "order": 32
+      },
+      "tdd": {
+        "name": "TDD",
+        "group": "sd-qa",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA"
+        ],
+        "order": 40,
+        "standard": {
+          "text": "Standard seit Schrödingers Katze in allen Stationen und Projekten",
+          "since": "NLS"
+        }
+      },
+      "teamleitung-plattform": {
+        "name": "Teamleitung (Plattform)",
+        "group": "lead-lead",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 148
+      },
+      "technische-leitung": {
+        "name": "Technische Leitung",
+        "group": "lead-lead",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 145
+      },
+      "textanalyse-dienst": {
+        "name": "Textanalyse-Dienst",
+        "group": "ai-tools",
+        "rating": 1,
+        "places": [
+          "WES"
+        ],
+        "order": 76
+      },
+      "trainingsdaten-curriculum": {
+        "name": "Trainingsdaten & Curriculum",
+        "group": "ai-ml",
+        "rating": 2,
+        "places": [
+          "BK"
+        ],
+        "order": 80
+      },
+      "transformers": {
+        "name": "Transformers",
+        "group": "ai-ml",
+        "rating": -1,
+        "places": [
+          "BK"
+        ],
+        "order": 84
+      },
+      "typescript": {
+        "name": "TypeScript",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "AP",
+          "BA"
+        ],
+        "order": 1
+      },
+      "unittests": {
+        "name": "Unittests",
+        "group": "sd-qa",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP",
+          "SB"
+        ],
+        "order": 41
+      },
+      "vb-net": {
+        "name": "VB.NET",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 5
+      },
+      "vb6": {
+        "name": "VB6",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 6
+      },
+      "vba": {
+        "name": "VBA",
+        "group": "sd-lang",
+        "rating": 1,
+        "places": [
+          "BDS"
+        ],
+        "order": 8
+      },
+      "vite": {
+        "name": "Vite",
+        "group": "sd-fe",
+        "rating": -1,
+        "places": [
+          "TP",
+          "AP",
+          "BA"
+        ],
+        "order": 26
+      },
+      "vitest": {
+        "name": "Vitest",
+        "group": "sd-qa",
+        "rating": -1,
+        "places": [
+          "TP",
+          "AP"
+        ],
+        "order": 47
+      },
+      "volltextsuche-lucene-net": {
+        "name": "Volltextsuche (Lucene.NET)",
+        "group": "data-db",
+        "rating": -1,
+        "places": [
+          "BA"
+        ],
+        "order": 99
+      },
+      "web-api-rest": {
+        "name": "Web-API & REST",
+        "group": "sd-net",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP"
+        ],
+        "order": 11
+      },
+      "windows-2000-11": {
+        "name": "Windows 2000–11",
+        "group": "infra-sys",
+        "rating": 3,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 133
+      },
+      "windows-dienste": {
+        "name": "Windows-Dienste",
+        "group": "sd-net",
+        "rating": 2,
+        "places": [
+          "KWA",
+          "BA"
+        ],
+        "order": 19
+      },
+      "windows-server": {
+        "name": "Windows Server",
+        "group": "infra-sys",
+        "rating": 2,
+        "places": [
+          "BDS",
+          "NLS",
+          "KWA"
+        ],
+        "order": 134
+      },
+      "winforms": {
+        "name": "WinForms",
+        "group": "sd-desk",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 31
+      },
+      "wpf": {
+        "name": "WPF",
+        "group": "sd-desk",
+        "rating": 2,
+        "places": [
+          "NLS"
+        ],
+        "order": 29
+      },
+      "xml-xsd": {
+        "name": "XML & XSD",
+        "group": "data-docs",
+        "rating": 2,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES"
+        ],
+        "order": 109
+      },
+      "xterm-js": {
+        "name": "xterm.js",
+        "group": "sd-desk",
+        "rating": -1,
+        "places": [
+          "AP"
+        ],
+        "order": 38
+      },
+      "xunit": {
+        "name": "xUnit",
+        "group": "sd-qa",
+        "rating": 3,
+        "places": [
+          "NLS",
+          "KWA",
+          "WES",
+          "TP",
+          "BA",
+          "AP",
+          "SB"
+        ],
+        "order": 43
+      },
+      "zugferd-e-rechnung": {
+        "name": "ZUGFeRD (E-Rechnung)",
+        "group": "data-docs",
+        "rating": 1,
+        "places": [
+          "NLS"
+        ],
+        "order": 110
+      }
+    },
+    "projects": {
+      "bds-arbeitsplatzbetrieb-und-it-service": {
+        "name": "Arbeitsplatzbetrieb und IT-Service",
+        "station": "BDS",
+        "base": false,
+        "order": 4,
+        "when": "",
+        "skills": []
+      },
+      "bds-auftragssystem-eines-handelskunden": {
+        "name": "Auftragssystem eines Handelskunden",
+        "station": "BDS",
+        "base": false,
+        "order": 2,
+        "when": "",
+        "skills": []
+      },
+      "bds-massgeschneiderte-fachanwendungen": {
+        "name": "Maßgeschneiderte Fachanwendungen",
+        "station": "BDS",
+        "base": false,
+        "order": 1,
+        "when": "",
+        "skills": []
+      },
+      "bds-rechnungserfassung-mit-ocr-fuer-einen-grosshaendler": {
+        "name": "Rechnungserfassung mit OCR für einen Großhändler",
+        "station": "BDS",
+        "base": false,
+        "order": 3,
+        "when": "",
+        "skills": []
+      },
+      "kwa-api-wrapper-fuer-leasinganfragen-eines-maschinenbauers": {
+        "name": "API-Wrapper für Leasinganfragen eines Maschinenbauers",
+        "station": "KWA",
+        "base": false,
+        "order": 2,
+        "when": "",
+        "skills": [
+          "C#",
+          "OAuth2 & JWT"
+        ]
+      },
+      "kwa-bestell-app-fuer-kantinen": {
+        "name": "Bestell-App für Kantinen",
+        "station": "KWA",
+        "base": false,
+        "order": 1,
+        "when": "",
+        "skills": [
+          "C#",
+          "T-SQL",
+          "PowerShell",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "EF Core",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "Windows-Dienste",
+          "CSS",
+          "Bootstrap",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Softwarearchitektur",
+          "Anforderungsanalyse",
+          "MS SQL Server",
+          "High Availability",
+          "Monitoring",
+          "Git",
+          "Azure DevOps",
+          "CI/CD-Pipelines",
+          "Windows Server",
+          "MS IIS"
+        ]
+      },
+      "nls-anbindung-zugekaufter-lager": {
+        "name": "Anbindung zugekaufter Lager",
+        "station": "NLS",
+        "base": false,
+        "order": 3,
+        "when": "",
+        "skills": []
+      },
+      "nls-basisdienste-der-plattform": {
+        "name": "Basisdienste der Plattform",
+        "station": "NLS",
+        "base": false,
+        "order": 2,
+        "when": "",
+        "skills": []
+      },
+      "nls-datenbankbetrieb-im-plattformteam": {
+        "name": "Datenbankbetrieb im Plattformteam",
+        "station": "NLS",
+        "base": false,
+        "order": 4,
+        "when": "",
+        "skills": []
+      },
+      "nls-konzernweite-lagersystem-migration": {
+        "name": "Konzernweite Lagersystem-Migration",
+        "station": "NLS",
+        "base": false,
+        "order": 5,
+        "when": "",
+        "skills": []
+      },
+      "nls-kundenportal-fuer-speditionen-eol": {
+        "name": "Kundenportal für Speditionen (EOL)",
+        "station": "NLS",
+        "base": false,
+        "order": 1,
+        "when": "",
+        "skills": []
+      },
+      "pv-agentenpult": {
+        "name": "Agentenpult",
+        "station": "PRIVAT",
+        "base": false,
+        "order": 3,
+        "when": "seit 09.2026",
+        "skills": [
+          "C#",
+          "TypeScript",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "OpenAPI (Swagger)",
+          "React",
+          "CSS",
+          "Vite",
+          "TanStack Query",
+          "Tauri",
+          "node-pty (ConPTY)",
+          "xterm.js",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Vitest",
+          "Playwright",
+          "Mock Service Worker",
+          "ESLint & Prettier",
+          "Harness Engineering",
+          "Context Engineering",
+          "Claude Code",
+          "Session Audit",
+          "Git",
+          "GitLab"
+        ]
+      },
+      "pv-belegarchiv": {
+        "name": "Belegarchiv",
+        "station": "PRIVAT",
+        "base": false,
+        "order": 6,
+        "when": "seit 05.2026",
+        "skills": [
+          "C#",
+          "TypeScript",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "EF Core",
+          "Dapper",
+          "SignalR",
+          "FluentValidation",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "Windows-Dienste",
+          "React",
+          "Vite",
+          "Tailwind CSS",
+          "Tauri",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Playwright",
+          "CQRS",
+          "Softwarearchitektur",
+          "ADRs",
+          "Scrum",
+          "Harness Engineering",
+          "Prompt Engineering",
+          "Context Engineering",
+          "Orchestrator-Agenten",
+          "Agentic SDLC (Scrum)",
+          "Claude Code",
+          "MCP",
+          "SQLite",
+          "Volltextsuche (Lucene.NET)",
+          "PDF-Extraktion",
+          "Dokumentenmanagement",
+          "Git",
+          "GitLab"
+        ]
+      },
+      "pv-belegklassifikation": {
+        "name": "Belegklassifikation",
+        "station": "PRIVAT",
+        "base": false,
+        "order": 2,
+        "when": "seit 10.2026",
+        "skills": [
+          "Python",
+          "Lizenz-Compliance",
+          "Orchestrator-Agenten",
+          "Headless-Agenten",
+          "Claude Code",
+          "Klassifikation",
+          "Kalibrierung",
+          "Fine-Tuning",
+          "Trainingsdaten & Curriculum",
+          "PyTorch",
+          "Transformers",
+          "Embeddings",
+          "BERT-Modelle",
+          "scikit-learn",
+          "Ollama",
+          "ONNX Runtime",
+          "Menschliche Prüfung",
+          "Agenten mit minimalen Rechten",
+          "Git"
+        ]
+      },
+      "pv-regelwerk-fuer-agenten": {
+        "name": "Regelwerk für Agenten",
+        "station": "PRIVAT",
+        "base": false,
+        "order": 4,
+        "when": "07.2026 – 09.2026",
+        "skills": [
+          "Python",
+          "Harness Engineering",
+          "Evaluation von KI-Agenten",
+          "Prompt Engineering",
+          "Context Engineering",
+          "Review-Agenten",
+          "Headless-Agenten",
+          "Claude Code",
+          "OpenAI Codex",
+          "Reproduzierbare Evaluation",
+          "Agenten mit minimalen Rechten",
+          "Docker",
+          "Git"
+        ]
+      },
+      "pv-schlankbus": {
+        "name": "SchlankBus",
+        "station": "PRIVAT",
+        "base": false,
+        "order": 5,
+        "when": "05.2026",
+        "skills": [
+          "C#",
+          ".NET",
+          "Unittests",
+          "xUnit",
+          "BenchmarkDotNet",
+          "CQRS",
+          "Lizenz-Compliance",
+          "Git",
+          "GitLab",
+          "CI/CD-Pipelines"
+        ]
+      },
+      "pv-wochenplaner": {
+        "name": "Wochenplaner",
+        "station": "PRIVAT",
+        "base": false,
+        "order": 1,
+        "when": "10.2026",
+        "skills": [
+          "C#",
+          "TypeScript",
+          "PowerShell",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "EF Core",
+          "React",
+          "CSS",
+          "Vite",
+          "TanStack Query",
+          "Photino.NET",
+          "Outlook-Add-in",
+          "Chrome-Erweiterung",
+          "Installer",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Vitest",
+          "Playwright",
+          "Mock Service Worker",
+          "Barrierefreiheit (axe)",
+          "ESLint & Prettier",
+          "Domain-Driven Design",
+          "CQRS",
+          "Harness Engineering",
+          "Prompt Engineering",
+          "Context Engineering",
+          "Review-Agenten",
+          "Claude Code",
+          "SQLite",
+          "Git",
+          "GitLab"
+        ]
+      },
+      "wes-architektur-der-naechsten-produktlinie": {
+        "name": "Architektur der nächsten Produktlinie",
+        "station": "WES",
+        "base": false,
+        "order": 10,
+        "when": "",
+        "skills": [
+          "C#",
+          "TypeScript",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Dapper",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "Angular",
+          "CSS",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Playwright",
+          "Domain-Driven Design",
+          "Clean Code",
+          "CQRS",
+          "Softwarearchitektur",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "MS SQL Server",
+          "Oracle",
+          "PostgreSQL",
+          "Datenmodellierung",
+          "Monitoring",
+          "ELK Stack",
+          "Schulungen & Onboarding",
+          "KI-Leitlinien im Team"
+        ]
+      },
+      "wes-automatisierte-marktberichte": {
+        "name": "Automatisierte Marktberichte",
+        "station": "WES",
+        "base": false,
+        "order": 5,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Anforderungsanalyse",
+          "Textanalyse-Dienst",
+          "MS SQL Server",
+          "Oracle",
+          "PostgreSQL",
+          "Datenmodellierung",
+          "Git",
+          "GitLab",
+          "Bitbucket",
+          "Energiemarkt-Reporting",
+          "Energiewirtschaft",
+          "Electron"
+        ]
+      },
+      "wes-datenkatalog-plattform": {
+        "name": "Datenkatalog-Plattform",
+        "station": "WES",
+        "base": false,
+        "order": 9,
+        "when": "",
+        "skills": [
+          "C#",
+          "TypeScript",
+          ".NET",
+          "ASP.NET Core",
+          "EF Core",
+          "SignalR",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "OAuth2 & JWT",
+          "Angular",
+          "CSS",
+          "Playwright",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Scrum",
+          "MS SQL Server",
+          "Dokumentenmanagement",
+          "Berechtigungslogik",
+          "Audit-Trail",
+          "Git",
+          "GitLab",
+          "Keycloak",
+          "LDAP",
+          "Energiemarkt-Reporting",
+          "Energiewirtschaft"
+        ]
+      },
+      "wes-einfuehrung-einer-einheitlichen-berichtsloesung": {
+        "name": "Einführung einer einheitlichen Berichtslösung",
+        "station": "WES",
+        "base": false,
+        "order": 8,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "Angular",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Clean Code",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "Lizenz-Compliance",
+          "GitHub Copilot Enterprise",
+          "FastReport",
+          "Git",
+          "GitLab",
+          "Artifactory",
+          "CI/CD-Pipelines",
+          "Energiemarkt-Reporting",
+          "Energiewirtschaft",
+          "Schulungen & Onboarding"
+        ]
+      },
+      "wes-grundstack-ohne-linien": {
+        "name": "Grundstack (ohne Linien)",
+        "station": "WES",
+        "base": true,
+        "order": 0,
+        "when": "",
+        "skills": [
+          "C#",
+          "T-SQL",
+          "PowerShell",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "Agile Entwicklung",
+          "Claude Code",
+          "MS SQL Server",
+          "Docker",
+          "Podman",
+          "Git",
+          "GitLab",
+          "Bitbucket",
+          "Artifactory",
+          "CI/CD-Pipelines",
+          "Windows 2000–11",
+          "MS IIS"
+        ]
+      },
+      "wes-meldewesen-fuer-netzbetreiber-format-a": {
+        "name": "Meldewesen für Netzbetreiber (Format A)",
+        "station": "WES",
+        "base": false,
+        "order": 3,
+        "when": "",
+        "skills": [
+          "C#",
+          "T-SQL",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Dapper",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Softwarearchitektur",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "GitHub Copilot Enterprise",
+          "MS SQL Server",
+          "Oracle",
+          "PostgreSQL",
+          "Datenmodellierung",
+          "Performance Engineering",
+          "Monitoring",
+          "XML & XSD",
+          "Podman",
+          "Git",
+          "GitLab",
+          "Bitbucket",
+          "Artifactory",
+          "Energiemarkt-Reporting",
+          "Energiewirtschaft",
+          "Schulungen & Onboarding"
+        ]
+      },
+      "wes-meldewesen-fuer-netzbetreiber-format-b": {
+        "name": "Meldewesen für Netzbetreiber (Format B)",
+        "station": "WES",
+        "base": false,
+        "order": 4,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Dapper",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "MS SQL Server",
+          "Oracle",
+          "PostgreSQL",
+          "Performance Engineering",
+          "XML & XSD",
+          "Git",
+          "GitLab",
+          "Bitbucket",
+          "Artifactory",
+          "Energiemarkt-Reporting",
+          "Energiewirtschaft"
+        ]
+      },
+      "wes-schulungen-und-onboarding": {
+        "name": "Schulungen und Onboarding",
+        "station": "WES",
+        "base": false,
+        "order": 11,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Dapper",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "CQRS",
+          "Softwarearchitektur",
+          "Prompt Engineering",
+          "Claude Code",
+          "GitHub Copilot Enterprise",
+          "Neuronale Netze (Grundlagen)",
+          "MS SQL Server",
+          "Performance Engineering",
+          "FastReport",
+          "Podman",
+          "CI/CD-Pipelines",
+          "ELK Stack",
+          "Grafana",
+          "Schulungen & Onboarding"
+        ]
+      },
+      "wes-service-registry-und-ueberwachung": {
+        "name": "Service-Registry und Überwachung",
+        "station": "WES",
+        "base": false,
+        "order": 7,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "CQRS",
+          "Softwarearchitektur",
+          "Anforderungsanalyse",
+          "GitHub Copilot Enterprise",
+          "Monitoring",
+          "Podman",
+          "Git",
+          "GitLab",
+          "Artifactory",
+          "CI/CD-Pipelines"
+        ]
+      },
+      "wes-zaehlerdatendienst": {
+        "name": "Zählerdatendienst",
+        "station": "WES",
+        "base": false,
+        "order": 6,
+        "when": "",
+        "skills": [
+          "C#",
+          "TypeScript",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "EF Core",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "Angular",
+          "CSS",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Playwright",
+          "Clean Code",
+          "Softwarearchitektur",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "GitHub Copilot Enterprise",
+          "MS SQL Server",
+          "Oracle",
+          "Performance Engineering",
+          "FastReport",
+          "Podman",
+          "Git",
+          "GitLab",
+          "Artifactory",
+          "Energiemarkt-Reporting",
+          "Energiewirtschaft",
+          "Schulungen & Onboarding"
+        ]
+      },
+      "wes-zentraler-ausgabedienst": {
+        "name": "Zentraler Ausgabedienst",
+        "station": "WES",
+        "base": false,
+        "order": 2,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Softwarearchitektur",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "Claude Code",
+          "GitHub Copilot Enterprise",
+          "Oracle",
+          "PostgreSQL",
+          "Performance Engineering",
+          "Datenmaskierung",
+          "Podman",
+          "Git",
+          "GitLab",
+          "Artifactory",
+          "CI/CD-Pipelines",
+          "Energiemarkt-Reporting",
+          "Schulungen & Onboarding",
+          "KI-Leitlinien im Team"
+        ]
+      },
+      "wes-zentraler-eingangsdienst": {
+        "name": "Zentraler Eingangsdienst",
+        "station": "WES",
+        "base": false,
+        "order": 1,
+        "when": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Web-API & REST",
+          "Microservices",
+          "EF Core",
+          "Serilog",
+          "OpenAPI (Swagger)",
+          "TDD",
+          "Unittests",
+          "Integrationstests",
+          "xUnit",
+          "Moq",
+          "Domain-Driven Design",
+          "Clean Code",
+          "Softwarearchitektur",
+          "Legacy-Migration",
+          "Anforderungsanalyse",
+          "Claude Code",
+          "MS SQL Server",
+          "Oracle",
+          "PostgreSQL",
+          "Performance Engineering",
+          "Monitoring",
+          "Podman",
+          "Git",
+          "GitLab",
+          "Artifactory",
+          "CI/CD-Pipelines",
+          "Energiemarkt-Reporting"
+        ]
+      }
+    },
+    "configs": {
+      "base": {
+        "name": "Base",
+        "schema": 4,
+        "values": {
+          "ageingPerStep": 0.25,
+          "ageingStep": 2,
+          "areaCharge": 20,
+          "areaScale": 1,
+          "at": {
+            "ai": [
+              302,
+              76
+            ],
+            "data": [
+              -374,
+              -181
+            ],
+            "fach": [
+              -32,
+              154
+            ],
+            "infra": [
+              -332,
+              106
+            ],
+            "lead": [
+              363,
+              -184
+            ],
+            "sd": [
+              20,
+              -107
+            ]
+          },
+          "ball": 1,
+          "categoryPull": 0.2,
+          "categoryRest": 40,
+          "clearance": 7,
+          "clusterGap": 20,
+          "cohesion": 0.05,
+          "collide": 0.8,
+          "collideLabel": 0.32,
+          "experienceYears": 8,
+          "fixed": false,
+          "friction": 0.3,
+          "groupCharge": 240,
+          "groupScale": 1,
+          "hold": 12.8,
+          "likeArea": 0.25,
+          "likeGroup": 2,
+          "likeGroupCross": 8,
+          "likeSkill": 0.5,
+          "likeSkillCross": 1,
+          "lineMode": "category",
+          "lines": {
+            "category": {
+              "bridgeBend": 0.15,
+              "bridgeColorDark": "#93a3a0",
+              "bridgeColorLight": "#596763",
+              "bridgeOpacityMax": 0.25,
+              "bridgeOpacityMin": 0.05,
+              "bridgeWidthMax": 2.6,
+              "bridgeWidthMin": 0.4,
+              "crossAreaOnly": true,
+              "drawnBridges": 100,
+              "lineGradient": true,
+              "widthExp": 0.5
+            },
+            "mixed": {
+              "bridgeBend": 0.15,
+              "bridgeColorDark": "#858585",
+              "bridgeColorLight": "#596763",
+              "bridgeOpacityMax": 0.25,
+              "bridgeOpacityMin": 0.05,
+              "bridgeWidthMax": 1,
+              "bridgeWidthMin": 0.2,
+              "crossAreaOnly": true,
+              "drawnBridges": 1724,
+              "lineGradient": false,
+              "widthExp": 0.75
+            },
+            "skill": {
+              "bridgeBend": -0.15,
+              "bridgeColorDark": "#858585",
+              "bridgeColorLight": "#596763",
+              "bridgeOpacityMax": 0.25,
+              "bridgeOpacityMin": 0.05,
+              "bridgeWidthMax": 0.5,
+              "bridgeWidthMin": 0.1,
+              "crossAreaOnly": true,
+              "drawnBridges": 1000,
+              "lineGradient": true,
+              "widthExp": 0.75
+            }
+          },
+          "lopsided": 3,
+          "pull": 0.02,
+          "range": 120,
+          "reachCap": 80,
+          "rest": 20,
+          "room": 5,
+          "roomEdge": true,
+          "seed": 4,
+          "separation": 8,
+          "showBridges": true,
+          "showExperience": true,
+          "skillCharge": 8,
+          "skillHold": 4,
+          "skillRest": 15,
+          "skillRestLabel": 0.8,
+          "skillScale": 1,
+          "standardSkills": false,
+          "stepLabels": true,
+          "stepSidestep": false,
+          "stepUntangle": true,
+          "ticks": 300
+        },
+        "savedAt": "2026-10-17T23:54:37.170Z"
+      }
+    },
+    "settings": {
+      "reader": {
+        "config": "base"
+      },
+      "texts": {
+        "privateNote": "In der Freizeit mit eigenen Abonnements von KI-Anbietern umgesetzt."
+      }
+    }
+  }
+}

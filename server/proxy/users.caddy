@@ -1,0 +1,24 @@
+# The subdomains <handle>.<domain>: "/" shows the start map of the owner or lists its public maps, and "/<slug>" shows
+# one map. A "/" at the end of a path goes to the app too, which answers with a 308 to the address without it. The subdomains are an option of the host: every map also has its path address on the main domain.
+# Files of the static site (paths with a dot or below a folder) come from /srv/site, as on the main domain.
+{$USER_SITE_ADDRESS:*.it-skills.localhost} {
+	import tls-{$TLS_MODE:internal}
+	import common
+	# A reserved name is no user site (reserved.caddy). The app answers every path there: www goes to the main domain
+	# with 308, and every other name gets 404, also for the files of the site.
+	import reserved.caddy
+	handle @reserved {
+		import to-app
+	}
+	@page path_regexp ^/[a-z0-9-]*(/[a-z0-9-]+)?/?$
+	handle @page {
+		import to-app
+	}
+	@app path /api/* /s/*
+	handle @app {
+		import to-app
+	}
+	handle {
+		import static-site
+	}
+}

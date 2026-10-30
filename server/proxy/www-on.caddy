@@ -1,0 +1,8 @@
+# WWW_REDIRECT=on with USER_SITES=none.caddy: www.<domain> sends every path to the same path on BASE_URL with 308, as the
+# app does for www under the wildcard of users.caddy. The host needs a DNS record for www.<domain>, and the proxy gets a
+# certificate for it as for the main domain. Do not turn it on when SITE_ADDRESS is the www name itself.
+www.{$SITE_ADDRESS:it-skills.localhost} {
+	import tls-{$TLS_MODE:internal}
+	import common
+	redir {$BASE_URL}{uri} 308
+}

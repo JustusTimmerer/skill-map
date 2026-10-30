@@ -1,0 +1,10 @@
+# Test dependencies, on top of requirements.txt. httpx2 is the client that Starlette 1.x asks for.
+-r requirements.txt
+httpcore2==2.13.1
+httpx2==2.13.1
+iniconfig==2.3.1
+packaging==26.3
+pluggy==1.7.0
+Pygments==2.21.0
+pytest==9.1.1
+truststore==0.10.5

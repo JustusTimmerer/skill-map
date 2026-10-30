@@ -1,0 +1,29 @@
+node_modules/
+# build output, made by npm run build
+skills/skill-atlas.html
+skills/print/
+render/
+preview/
+# test output, made by the tests
+tests/e2e/out/
+tests/editor/site/
+tests/editor/test/shots/
+tests/migrate-now/batch*.json
+tests/spacing/demo/
+tests/spacing/out/
+tests/spacing/*.png
+tests/spacing/pos*.json
+tests/spacing/ed-*.html
+tests/settings/out/
+# ArtifactData exports, read fresh for every export
+exports/
+# local copies of measurement scratchpads, too large for git
+explorations/
+# self-hosted site, made by npm run build:selfhost
+dist/
+tests/selfhost/out/
+tests/server/out/
+server/.env
+# the pages of the old build for claude.ai, which no build makes any more
+skills/skill-editor.html
+tests/editor/skills/

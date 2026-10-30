@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="account.pageTitle">Account</title>
+<link rel="stylesheet" href="/account/account.css">
+<script src="/assets/i18n.js" defer></script>
+<script src="/assets/templates.js" defer></script>
+<script src="/account/account.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <p class="home"><a href="/" data-i18n="account.home">← To the start page</a></p>
+    <div class="language" data-language-picker></div>
+    <h1 data-i18n="account.heading">Account</h1>
+    <p id="who" hidden></p>
+  </header>
+  <p id="message" role="status" aria-live="polite" hidden></p>
+
+  <section id="invitation" class="box" hidden>
+    <h2 data-i18n="account.invitation.heading">Invitation to a team</h2>
+    <p id="invitation-text"></p>
+    <p id="invitation-login" hidden data-i18n="account.invitation.signIn">Sign in or register. Then accept the invitation here.</p>
+    <div class="row">
+      <button type="button" id="accept-invitation" hidden data-i18n="account.invitation.accept">Accept invitation</button>
+      <button type="button" id="dismiss-invitation" class="quiet" data-i18n="account.invitation.dismiss">Hide</button>
+    </div>
+  </section>
+
+  <section id="confirm" class="box" hidden>
+    <h2 data-i18n="account.confirm.heading">Confirm account</h2>
+    <p data-i18n="account.confirm.intro">Enter the password that you chose when you registered. Only the e-mail and the password
+      together confirm the account.</p>
+    <form id="confirm-form">
+      <label data-i18n="account.field.password">Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit" data-i18n="account.confirm.submit">Confirm account</button>
+    </form>
+  </section>
+
+  <section id="signed-out" hidden>
+    <p class="lead" data-i18n="account.intro.text">With an account, the server keeps your maps. You open them on every device and share them to read, with link or in public. Without an account, your maps stay in your browser, <a href="/" data-i18n="account.intro.startPage">on the start page</a>.</p>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="login" aria-selected="true" data-i18n="account.tab.login">Sign in</button>
+      <button type="button" role="tab" data-tab="register" aria-selected="false" data-i18n="account.tab.register">Register</button>
+      <button type="button" role="tab" data-tab="forgot" aria-selected="false" data-i18n="account.tab.forgot">Forgot password</button>
+    </div>
+    <form id="login" data-panel="login">
+      <label data-i18n="account.field.email">E-mail address <input name="email" type="email" autocomplete="username" required></label>
+      <label data-i18n="account.field.password">Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit" data-i18n="account.login.submit">Sign in</button>
+    </form>
+    <form id="register" data-panel="register" hidden>
+      <label data-i18n="account.field.email">E-mail address <input name="email" type="email" autocomplete="email" required></label>
+      <label data-i18n="account.register.handle">Name for your address <input name="handle" autocomplete="username" required minlength="3" maxlength="30"
+        pattern="[a-z0-9][a-z0-9\-]{1,28}[a-z0-9]" aria-describedby="handle-hint"></label>
+      <small id="handle-hint" data-i18n="account.register.handleHint">3 to 30 characters: a–z, 0–9 and hyphens. Your public maps are then at
+        <code data-i18n="account.register.handlePath">/name</code>.</small>
+      <label data-i18n="account.field.password">Password <input name="password" type="password" autocomplete="new-password" required minlength="12"
+        aria-describedby="password-hint"></label>
+      <small id="password-hint" data-i18n="account.register.passwordHint">At least 12 characters. Long sentences and uncommon words make a password strong. Symbols, digits and capitals are optional.</small>
+      <button type="submit" data-i18n="account.register.submit">Register</button>
+    </form>
+    <form id="forgot" data-panel="forgot" hidden>
+      <label data-i18n="account.field.email">E-mail address <input name="email" type="email" autocomplete="email" required></label>
+      <button type="submit" data-i18n="account.forgot.submit">Send a link for a new password</button>
+    </form>
+  </section>
+
+  <section id="reset" hidden>
+    <h2 data-i18n="account.reset.heading">New password</h2>
+    <form id="reset-form">
+      <label data-i18n="account.field.newPassword">New password <input name="password" type="password" autocomplete="new-password" required minlength="12"
+        aria-describedby="reset-password-hint"></label>
+      <small id="reset-password-hint" data-i18n="account.register.passwordHint">At least 12 characters. Long sentences and uncommon words make a password strong. Symbols, digits and capitals are optional.</small>
+      <button type="submit" data-i18n="account.reset.submit">Set password</button>
+    </form>
+  </section>
+
+  <section id="signed-in" hidden>
+    <div class="row">
+      <a id="profile" href="#" data-i18n="account.profile.link">Your public page</a>
+      <a id="profile-site" href="#" hidden></a>
+      <button type="button" id="logout" class="quiet" data-i18n="account.logout.button">Sign out</button>
+    </div>
+
+    <h2 data-i18n="account.maps.heading">Your maps</h2>
+    <ul id="maps" class="maps"></ul>
+    <p id="no-maps" hidden data-i18n="account.maps.none">You have no map yet.</p>
+
+    <form id="new-map" class="row">
+      <label class="grow" data-i18n="account.newMap.label">New map <input name="title" required maxlength="120" placeholder="Title"
+        data-i18n-attr="placeholder:account.newMap.titlePlaceholder"></label>
+      <label data-i18n="account.newMap.template">Template <select name="template">
+        <option value="default" data-i18n="account.template.default">Default set</option>
+        <option value="empty" data-i18n="account.template.empty">Empty</option>
+      </select></label>
+      <button type="submit" data-i18n="account.newMap.create">Create</button>
+    </form>
+    <form id="import" class="row">
+      <label class="grow" data-i18n="account.import.label">Import a map file <input name="file" type="file" accept=".json,application/json" required></label>
+      <button type="submit" data-i18n="account.import.submit">Import</button>
+    </form>
+
+    <section id="teams" aria-labelledby="teams-title">
+      <h2 id="teams-title" data-i18n="account.teams.heading">Teams</h2>
+      <ul id="team-list" class="maps"></ul>
+      <p id="no-teams" hidden data-i18n="account.teams.none">You are in no team yet.</p>
+      <form id="new-team">
+        <h3 data-i18n="account.newTeam.heading">New team</h3>
+        <label data-i18n="account.team.name">Name <input name="name" required maxlength="100"></label>
+        <label data-i18n="account.newTeam.handle">Address of the team <input name="handle" required minlength="3" maxlength="30"
+          pattern="[a-z0-9][a-z0-9\-]{1,28}[a-z0-9]" aria-describedby="team-handle-hint"></label>
+        <small id="team-handle-hint" data-i18n="account.newTeam.handleHint">3 to 30 characters: a–z, 0–9 and hyphens. The public maps of the
+          team are then at <code data-i18n="account.newTeam.handlePath">/address</code>.</small>
+        <button type="submit" data-i18n="account.newTeam.submit">Create team</button>
+      </form>
+    </section>
+
+    <h2 data-i18n="account.settings.heading">Account</h2>
+    <p><a id="export-all" href="/api/account/export" data-i18n="account.exportAll">Download all your own maps as a ZIP file</a></p>
+    <form id="password-form">
+      <h3 data-i18n="account.password.heading">Change password</h3>
+      <label data-i18n="account.password.current">Current password <input name="current" type="password" autocomplete="current-password" required></label>
+      <label data-i18n="account.field.newPassword">New password <input name="new" type="password" autocomplete="new-password" required minlength="12"
+        aria-describedby="new-password-hint"></label>
+      <small id="new-password-hint" data-i18n="account.register.passwordHint">At least 12 characters. Long sentences and uncommon words make a password strong. Symbols, digits and capitals are optional.</small>
+      <button type="submit" data-i18n="account.password.submit">Change password</button>
+    </form>
+    <form id="delete-form">
+      <h3 data-i18n="account.delete.heading">Delete account</h3>
+      <p data-i18n="account.delete.text">This deletes your account and all your maps with their links. Teams in which you are
+        alone go with it. You cannot undo this.</p>
+      <label data-i18n="account.field.password">Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit" class="danger" data-i18n="account.delete.submit">Delete account</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>

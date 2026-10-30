@@ -1,0 +1,125 @@
+{
+  "reader": "base",
+  "configs": [
+    {
+      "id": "base",
+      "name": "Base",
+      "schema": 4,
+      "values": {
+        "ageingPerStep": 0.25,
+        "ageingStep": 2,
+        "areaCharge": 20,
+        "areaScale": 1,
+        "at": {
+          "ai": [
+            302,
+            76
+          ],
+          "data": [
+            -374,
+            -181
+          ],
+          "fach": [
+            -32,
+            154
+          ],
+          "infra": [
+            -332,
+            106
+          ],
+          "lead": [
+            363,
+            -184
+          ],
+          "sd": [
+            20,
+            -107
+          ]
+        },
+        "ball": 1,
+        "categoryPull": 0.2,
+        "categoryRest": 40,
+        "clearance": 7,
+        "clusterGap": 20,
+        "cohesion": 0.05,
+        "collide": 0.8,
+        "collideLabel": 0.32,
+        "experienceYears": 8,
+        "fixed": false,
+        "friction": 0.3,
+        "groupCharge": 240,
+        "groupScale": 1,
+        "hold": 12.8,
+        "likeArea": 0.25,
+        "likeGroup": 2,
+        "likeGroupCross": 8,
+        "likeSkill": 0.5,
+        "likeSkillCross": 1,
+        "lineMode": "category",
+        "lines": {
+          "category": {
+            "bridgeBend": 0.15,
+            "bridgeColorDark": "#93a3a0",
+            "bridgeColorLight": "#596763",
+            "bridgeOpacityMax": 0.25,
+            "bridgeOpacityMin": 0.05,
+            "bridgeWidthMax": 2.6,
+            "bridgeWidthMin": 0.4,
+            "crossAreaOnly": true,
+            "drawnBridges": 100,
+            "lineGradient": true,
+            "widthExp": 0.5
+          },
+          "mixed": {
+            "bridgeBend": 0.15,
+            "bridgeColorDark": "#858585",
+            "bridgeColorLight": "#596763",
+            "bridgeOpacityMax": 0.25,
+            "bridgeOpacityMin": 0.05,
+            "bridgeWidthMax": 1,
+            "bridgeWidthMin": 0.2,
+            "crossAreaOnly": true,
+            "drawnBridges": 1724,
+            "lineGradient": false,
+            "widthExp": 0.75
+          },
+          "skill": {
+            "bridgeBend": -0.15,
+            "bridgeColorDark": "#858585",
+            "bridgeColorLight": "#596763",
+            "bridgeOpacityMax": 0.25,
+            "bridgeOpacityMin": 0.05,
+            "bridgeWidthMax": 0.5,
+            "bridgeWidthMin": 0.1,
+            "crossAreaOnly": true,
+            "drawnBridges": 1000,
+            "lineGradient": true,
+            "widthExp": 0.75
+          }
+        },
+        "lopsided": 3,
+        "pull": 0.02,
+        "range": 120,
+        "reachCap": 80,
+        "rest": 20,
+        "room": 5,
+        "roomEdge": true,
+        "seed": 4,
+        "separation": 8,
+        "showBridges": true,
+        "showExperience": true,
+        "skillCharge": 8,
+        "skillHold": 4,
+        "skillRest": 15,
+        "skillRestLabel": 0.8,
+        "skillScale": 1,
+        "standardSkills": false,
+        "stepLabels": true,
+        "stepSidestep": false,
+        "stepUntangle": true,
+        "ticks": 300
+      },
+      "savedAt": "2026-10-17T23:54:37.170Z"
+    }
+  ]
+}

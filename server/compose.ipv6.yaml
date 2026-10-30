@@ -1,0 +1,28 @@
+# IPv6 for the stack of compose.yaml (README.md, "Deploy"). Add this file after compose.yaml to each command that
+# starts containers:
+#
+#   docker compose -f server/compose.yaml -f server/compose.ipv6.yaml up -d --build
+#
+# BIND_ADDRESS of compose.yaml publishes the ports of the proxy on one IPv4 address. This file publishes them on an IPv6
+# address of the host too: BIND_ADDRESS_V6, by default "::" (every IPv6 address of the host). It also gives the network
+# of the stack an IPv6 subnet, so that Docker forwards an IPv6 connection straight to the proxy, and the proxy sees the
+# address of the visitor (the rate limits per IP count each visitor on its own). The subnet list replaces the one of
+# compose.yaml, so it names the IPv4 subnet again.
+#
+# It needs Docker Engine 27 or later, which writes the IPv6 rules of the firewall (ip6tables) by default, and a unique
+# local subnet (ULA, below fd00::/8). Without them, Docker passes each IPv6 connection through its own proxy process, the
+# proxy of the stack sees one address for every IPv6 visitor, and all of them share one rate limit (README.md, "IPv6").
+services:
+  proxy:
+    ports:
+      - "[${BIND_ADDRESS_V6:-::}]:${HTTP_PORT:-8080}:${HTTP_PORT:-8080}"
+      - "[${BIND_ADDRESS_V6:-::}]:${HTTPS_PORT:-8443}:${HTTPS_PORT:-8443}"
+      - "[${BIND_ADDRESS_V6:-::}]:${HTTPS_PORT:-8443}:${HTTPS_PORT:-8443}/udp"
+
+networks:
+  backend:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET:-10.213.97.0/24}
+        - subnet: ${NETWORK_SUBNET_V6:-fd00:10:213:97::/64}

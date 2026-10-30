@@ -1,0 +1,6 @@
+[
+  { "id": "neu-grundstack", "station": "NEU", "order": 0, "name": "Grundstack Neu (ohne Linien)", "base": true, "skills": ["C#", "SQL Server"], "when": "" },
+  { "id": "neu-kundenportal", "station": "NEU", "order": 4, "name": "Kundenportal", "base": false, "skills": ["C#", "React"], "when": "" },
+  { "id": "privat-chatbot", "station": "PRIVAT", "order": 1, "name": "Chatbot", "base": false, "skills": ["Claude Code", "Python", "Fortran"], "when": "2025" },
+  { "id": "alt-ohne-kenntnisse", "station": "ALT", "order": 1, "name": "Ohne Kenntnisse", "base": false, "skills": [], "when": "" }
+]

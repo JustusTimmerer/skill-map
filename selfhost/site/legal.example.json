@@ -1,0 +1,8 @@
+{
+  "name": "Vorname Nachname",
+  "address": "Straße 1\n12345 Ort",
+  "email": "name@example.org",
+  "host": "Name des Hosting-Anbieters",
+  "retention": "7 Tagen",
+  "authority": "die zuständige Landesdatenschutzbehörde"
+}

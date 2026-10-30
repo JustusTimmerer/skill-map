@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--@HEAD@-->
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <img src="assets/icon.svg" alt="" width="30" height="30">
+    <div><h1><a href="index.html">Skill-Map</a></h1><p data-i18n="start.tagline">Skills as a network of areas, categories, stations and projects</p></div>
+    <div class="language" data-language-picker></div>
+  </div>
+</header>
+<main class="wrap legal">
+  <h1 data-i18n="ai.heading">Make a map with an AI tool</h1>
+  <p class="lead" data-i18n="ai.lead">An AI tool such as Claude can read your CV and make a Skill-Map for you. You get a map file, or a map that is already loaded in this browser.</p>
+  <h2 data-i18n="ai.stepsHeading">How it works</h2>
+  <ol>
+    <li data-i18n="ai.step1">Give your CV to the AI tool.</li>
+    <li data-i18n="ai.step2">Paste the prompt below. The tool reads the description of the format on this site.</li>
+    <li data-i18n="ai.step3">The tool gives you a map file. On the start page, press “Open map file” and pick it. A tool that can use your browser can also load the map for you.</li>
+    <li data-i18n="ai.step4">Check the map and change it in the editor. The skills and the ratings are the guess of the tool from your CV, so correct what is wrong.</li>
+  </ol>
+  <h2 data-i18n="ai.promptHeading">Prompt</h2>
+  <p id="prompt" class="prompt"></p>
+  <p class="muted" data-i18n="ai.privacyNote">Your CV goes only to the AI tool that you use. This site never sees it. The map stays in this browser, and “Export” saves a copy.</p>
+  <p><a href="ai/format.txt" data-i18n="ai.formatLink">Description of the format for AI tools</a></p>
+  <p><a href="index.html" data-i18n="legal.home">← To the start page</a></p>
+</main>
+<script src="assets/i18n.js"></script>
+<script src="assets/ai.js"></script>
+</body>
+</html>
