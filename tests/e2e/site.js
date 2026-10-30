@@ -111,6 +111,16 @@ async function openPage(browser, site, page, { runtime = { mode: "signedOut" }, 
   // An init script is a text, a function, or [function, argument].
   for (const script of [...init, page && page.init].filter(Boolean)) await (Array.isArray(script) ? context.addInitScript(script[0], script[1]) : context.addInitScript(script));
   const tab = await context.newPage();
+  // A map page starts its first layout one frame after the parse (skills/page.js), often after the load event. goto and
+  // reload wait for that start, as they waited for the load event before.
+  for (const name of ["goto", "reload"]) {
+    const plain = tab[name].bind(tab);
+    tab[name] = async (...args) => {
+      const response = await plain(...args);
+      await tab.waitForFunction(() => !document.getElementById("map") || window.skillMapStarted === true, null, { timeout: 30000 });
+      return response;
+    };
+  }
   tab.on("pageerror", (error) => errors.push(error.message));
   if (logConsole) tab.on("console", (message) => { if (message.type() === "error" && !(ignore && ignore.test(message.text()))) errors.push(message.text()); });
   if (goto && page) await tab.goto(site.url(page));

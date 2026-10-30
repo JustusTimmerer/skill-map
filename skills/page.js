@@ -261,10 +261,26 @@ function createStructure(onChange) {
   };
 }
 
-if (!window.d3) {
-  panel.innerHTML = `<h2>${t("map.notLoaded")}</h2><p>${t("map.notLoadedHint")}</p>`;
-} else {
-  start();
+// The first layout takes seconds and blocks the page. It starts after the next paint, so the reader sees the loading
+// message in place of a blank map, also when the scripts come from the cache.
+function startOnce() {
+  try {
+    if (!window.d3) panel.innerHTML = `<h2>${t("map.notLoaded")}</h2><p>${t("map.notLoadedHint")}</p>`;
+    else start();
+  } finally {
+    document.getElementById("map-loading").hidden = true;
+    window.skillMapStarted = true;
+    document.dispatchEvent(new Event("skillmap:started"));
+  }
+}
+// A hidden page gets no frame until it shows, so it starts at once. A frame of another site outside the view gets no
+// frames either, so the timer starts it.
+if (document.hidden) startOnce();
+else {
+  let started = false;
+  const once = () => { if (!started) { started = true; startOnce(); } };
+  requestAnimationFrame(() => setTimeout(once, 0));
+  setTimeout(once, 200);
 }
 
 function start() {

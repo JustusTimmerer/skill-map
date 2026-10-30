@@ -363,9 +363,11 @@ function checkTopLevelNames(siteFiles) {
   if (differ.length) throw new Error("RESERVED in server/app/security.py and server/proxy/reserved.caddy differ in: " + differ.join(", "));
 }
 
-// Every page and style of the site, checked for a link to another host.
+// Every page and style of the site, checked for a link to another host. A link of an <a> tag to an https address is
+// allowed, because the browser loads nothing from it until the reader follows it.
 function checkLocal(file, text) {
-  const external = text.match(/(?:\b(?:src|href|action|poster|data)\s*=\s*["']?|url\(\s*["']?|@import\s+["'])(?:https?:)?\/\/[^"')\s>]+/gi);
+  const loaded = text.replace(/<a\s[^>]*>/gi, (tag) => tag.replace(/\bhref\s*=\s*(["'])https:\/\/[^"'\s>]+\1/i, ""));
+  const external = loaded.match(/(?:\b(?:src|href|action|poster|data)\s*=\s*["']?|url\(\s*["']?|@import\s+["'])(?:https?:)?\/\/[^"')\s>]+/gi);
   if (external) throw new Error(file + " links to another host: " + external.join(", "));
 }
 

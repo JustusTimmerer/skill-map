@@ -502,11 +502,13 @@ test("the built files: no file names the claude.ai runtime or a CDN", async ({ c
 });
 // Reserved names for examples (RFC 2606) are allowed in texts: the help text of "Einbetten" shows one as a pattern.
 const EXAMPLE_ADDRESS = /^https?:\/\/([a-z0-9-]+\.)*example\.(org|com|net)([/:?#]|$)/i;
-test("the built files: no page, style or script outside vendor/ holds the address of another host", async ({ check }) => {
+// The footer of the start page links the source code. The browser loads nothing from it until the reader follows the link.
+const SOURCE_ADDRESS = "https://github.com/JustusTimmerer/skill-map";
+test("the built files: no page, style or script outside vendor/ holds the address of another host, besides the link to the source code", async ({ check }) => {
   const files = builtFiles().filter((f) => /\.(html|css|js)$/.test(f) && !f.startsWith("vendor/"));
   for (const file of files) {
     const text = fs.readFileSync(path.join(SITE, file), "utf8");
-    const found = uniq((text.match(/https?:\/\/[^\s"'`<>()\\,;]+/g) || []).map((u) => u.replace(/[.:]+$/, "")).filter((u) => !W3_NAMESPACE.test(u) && !EXAMPLE_ADDRESS.test(u)));
+    const found = uniq((text.match(/https?:\/\/[^\s"'`<>()\\,;]+/g) || []).map((u) => u.replace(/[.:]+$/, "")).filter((u) => !W3_NAMESPACE.test(u) && !EXAMPLE_ADDRESS.test(u) && u !== SOURCE_ADDRESS));
     if (found.length) check(false, `${file}: ${found.join(", ")}`);
   }
   check(true, `searched ${files.length} files`);

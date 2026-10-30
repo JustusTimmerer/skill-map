@@ -305,7 +305,7 @@ test("a map from the default set: the owner adds an area, a category and a skill
   await page.fill("#cf-name", "Testkenntnis");
   await page.selectOption("#cf-rating", "3");
   await submitForm(page);
-  check((await h2(page)) === "Testkenntnis", "the skill");
+  check((await h2(page)) === "Testkategorie" && await page.locator("#panel .chip", { hasText: "Testkenntnis" }).count() === 1, "the skill, and the panel stays on its category");
   await saved(page);
   const docs = await serverDocs(page, state.itMap.api);
   check(docs.some((d) => d.collection === "areas" && d.id === "testbereich" && d.data.name === "Testbereich")
@@ -566,7 +566,9 @@ async function frameOf(page, selector = "iframe") {
   const shown = await frame.evaluate(() => !!document.getElementById("map")).catch(() => false);
   return { frame, shown };
 }
-const frameReady = (frame, heading = "9 Kenntnisse in 3 Bereichen") => frame.waitForFunction((h) => { const x = document.querySelector("#panel h2"); return !!x && x.textContent === h; }, heading, { timeout: 15000 }).then(() => true, () => false);
+// It polls by time: a frame of another site outside the view gets no animation frames, and the map starts there by its
+// timer (skills/page.js).
+const frameReady = (frame, heading = "9 Kenntnisse in 3 Bereichen") => frame.waitForFunction((h) => { const x = document.querySelector("#panel h2"); return !!x && x.textContent === h; }, heading, { timeout: 15000, polling: 100 }).then(() => true, () => false);
 // A point of an element in the frame, in the coordinates of the page around it.
 async function framePoint(page, frame, find) {
   const box = await (await page.$("iframe")).boundingBox();

@@ -72,9 +72,20 @@ test("map draws every node once with its symbol", withPage({}, async (page, chec
   check(await page.locator("#map path.shared-line").count() > 0, "lines of shared use between categories are drawn");
 }));
 
+test("the loading message covers the map until the first layout", withPage({}, async (page, check) => {
+  const html = await page.evaluate(() => fetch(location.href).then((r) => r.text()));
+  const tag = (html.match(/<p class="map-loading"[^>]*>[^<]*<\/p>/) || [""])[0];
+  check(!!tag && !/\shidden\b/.test(tag) && tag.includes("Loading the map, please wait …"), "the page source shows the message before any script runs");
+  const shown = await page.evaluate(() => { const p = document.getElementById("map-loading"); return { hidden: p.hidden, display: getComputedStyle(p).display, text: p.textContent }; });
+  check(shown.hidden && shown.display === "none", "after the first layout the message is hidden");
+  check(shown.text === "Die Karte lädt, bitte warten …", "the message is translated: " + shown.text);
+  check(await page.locator("#map g.node").count() === 16, "the map is drawn");
+}));
+
 test("without d3 the page explains that the map did not load", withPage({ mode: "noD3" }, async (page, check) => {
   check((await h.h2(page)) === "Die Karte konnte nicht laden", "error headline");
   check((await h.panel(page)).includes("Bitte die Seite neu laden."), "error tells what to do");
+  check(await page.evaluate(() => document.getElementById("map-loading").hidden), "the loading message is hidden");
 }));
 
 // Zoom and labels

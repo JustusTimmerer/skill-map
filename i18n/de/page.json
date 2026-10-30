@@ -16,6 +16,7 @@
   "map.label": { "text": "Netzwerk der Kenntnisse", "source": "Network of skills" },
   "map.labelAreas": { "text": { "one": "Netzwerk der Kenntnisse in {count} Bereich", "other": "Netzwerk der Kenntnisse in {count} Bereichen" }, "source": { "one": "Network of skills in {count} area", "other": "Network of skills in {count} areas" } },
   "map.hint": { "text": "scrollen oder ziehen zum Zoomen und Verschieben", "source": "scroll or drag to zoom and move" },
+  "map.loading": { "text": "Die Karte lädt, bitte warten …", "source": "Loading the map, please wait …" },
   "map.notLoaded": { "text": "Die Karte konnte nicht laden", "source": "The map could not load" },
   "map.notLoadedHint": { "text": "Die Zeichenbibliothek wurde nicht geladen. Bitte die Seite neu laden.", "source": "The drawing library did not load. Please reload the page." },
   "edit.bar": { "text": "Skills zuweisen", "source": "Assign skills" },

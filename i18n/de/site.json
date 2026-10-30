@@ -225,5 +225,6 @@
   "ai.prompt": { "text": "Erstelle aus meinem Lebenslauf eine Skill-Map. Lies zuerst {url} und folge dem Format, auf das es verweist. Nutze nur, was in meinem Lebenslauf steht, bewerte meine Skills nach seinen Belegen und sag mir, was du angenommen hast. Gib mir die Map-Datei, oder lade sie auf der Website, wenn du meinen Browser bedienen kannst.", "source": "Make a Skill-Map from my CV. First read {url} and follow the format that it links. Use only what my CV says, rate my skills from its evidence, and tell me what you assumed. Give me the map file, or load it on the site if you can use my browser." },
   "ai.privacyNote": { "text": "Dein Lebenslauf geht nur an das KI-Werkzeug, das du benutzt. Diese Website sieht ihn nie. Die Map bleibt in diesem Browser, und „Exportieren“ speichert eine Kopie.", "source": "Your CV goes only to the AI tool that you use. This site never sees it. The map stays in this browser, and “Export” saves a copy." },
   "ai.formatLink": { "text": "Beschreibung des Formats für KI-Werkzeuge", "source": "Description of the format for AI tools" },
-  "site.licenseLink": { "text": "Lizenz", "source": "License" }
+  "site.licenseLink": { "text": "Lizenz", "source": "License" },
+  "site.sourceLink": { "text": "Quellcode auf GitHub", "source": "Source code on GitHub" }
 }

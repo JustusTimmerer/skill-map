@@ -636,7 +636,8 @@
     const loaded = load().then((x) => { current = x; return x; });
     const db = loaded.then((x) => x && x.db);
     const ownerNow = owner;
-    const ready = () => (document.readyState === "loading" ? new Promise((done) => document.addEventListener("DOMContentLoaded", done, { once: true })) : Promise.resolve());
+    // page.js starts one frame after the parse and then sets skillMapStarted and sends "skillmap:started".
+    const ready = () => (window.skillMapStarted ? Promise.resolve() : new Promise((done) => document.addEventListener("skillmap:started", done, { once: true })));
     // After the page script: its own tools stand in the header then. The embed view gets none.
     if (!embedded) ready().then(() => setTimeout(() => addTools(info, ownerNow), 0));
     return {

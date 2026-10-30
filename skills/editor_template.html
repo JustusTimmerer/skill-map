@@ -59,6 +59,8 @@ main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0
 .map { position: relative; min-height: 0; overflow: hidden; }
 #map { width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; background: var(--bg); }
 #map:active { cursor: grabbing; }
+.map-loading { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; background: var(--bg); color: var(--muted); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.04em; pointer-events: none; }
+.map-loading[hidden] { display: none; }
 .hint { position: absolute; left: 12px; bottom: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
 aside { background: var(--surface); border-left: 1px solid var(--line); overflow-y: auto; padding: 18px 18px 24px; display: grid; align-content: start; gap: 14px; min-width: 0; }
 aside h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
@@ -333,6 +335,8 @@ a.tool-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; 
   <main>
     <div class="map">
       <svg id="map" role="img" aria-label="Network of skills" data-i18n-attr="aria-label:map.label"></svg>
+      <!-- Covers the map until page.js drew it the first time. -->
+      <p class="map-loading" id="map-loading" role="status" data-i18n="map.loading">Loading the map, please wait …</p>
       <!-- The force menu stays hidden until the page knows that the viewer owns it (setupForces). -->
       <section class="cfg" id="cfg" aria-label="Set the forces" data-i18n-attr="aria-label:menu.label" hidden>
         <div class="cfg-head">

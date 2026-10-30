@@ -225,5 +225,6 @@
   "ai.prompt": { "text": "Make a Skill-Map from my CV. First read {url} and follow the format that it links. Use only what my CV says, rate my skills from its evidence, and tell me what you assumed. Give me the map file, or load it on the site if you can use my browser.", "note": "The text that a visitor copies into an AI tool. {url} is the address of the file llms.txt of this site. The AI tool reads the file at this address." },
   "ai.privacyNote": { "text": "Your CV goes only to the AI tool that you use. This site never sees it. The map stays in this browser, and “Export” saves a copy.", "note": "Note on the AI page about privacy. The quoted button is the text of site.mapExport." },
   "ai.formatLink": { "text": "Description of the format for AI tools", "note": "Link on the AI page to the text file that describes the map file for AI tools." },
-  "site.licenseLink": { "text": "License", "note": "Link in the footer to the license of the software (the text file license.txt)." }
+  "site.licenseLink": { "text": "License", "note": "Link in the footer to the license of the software (the text file license.txt)." },
+  "site.sourceLink": { "text": "Source code on GitHub", "note": "Link in the footer to the public repository of the software on GitHub. Keep “GitHub” as it is." }
 }

@@ -16,6 +16,7 @@
   "map.label": { "text": "Network of skills", "note": "Screen reader label of the map while it has no area." },
   "map.labelAreas": { "text": { "one": "Network of skills in {count} area", "other": "Network of skills in {count} areas" }, "note": "Screen reader label of the map. {count} is the number of its areas." },
   "map.hint": { "text": "scroll or drag to zoom and move", "note": "Hint at the bottom left of the map, small letters and no full stop." },
+  "map.loading": { "text": "Loading the map, please wait …", "note": "Message in the middle of the empty map while the page computes the first layout, which can take a few seconds." },
   "map.notLoaded": { "text": "The map could not load", "note": "Panel heading when the drawing library did not load, no full stop." },
   "map.notLoadedHint": { "text": "The drawing library did not load. Please reload the page.", "note": "Panel text below map.notLoaded." },
   "edit.bar": { "text": "Assign skills", "note": "Label of the bar above the map while the owner assigns skills to a project. It shows in capitals." },

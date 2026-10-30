@@ -138,7 +138,8 @@ test("start page: the text, the buttons, the storage warning and the example map
   const fonts = await page.evaluate(() => document.fonts.ready.then(() => [...document.fonts].filter((f) => f.status === "loaded").map((f) => f.family.replace(/"/g, "") + " " + f.weight)));
   check(fonts.includes("Archivo 400") && fonts.includes("Archivo 700") && fonts.includes("IBM Plex Mono 500"), "the fonts load from the site: " + fonts.join(", "));
   const links = await page.locator("footer a").evaluateAll((all) => all.map((a) => a.getAttribute("href")));
-  check(same(links, ["imprint.html", "privacy.html", "ai.html", "license.txt", "vendor/licenses/d3-ISC.txt", "vendor/licenses/Archivo-OFL.txt", "vendor/licenses/IBM-Plex-Mono-OFL.txt", "vendor/licenses/Noto-Sans-OFL.txt", "vendor/licenses/zxcvbn-MIT.txt", "vendor/licenses/zxcvbn-ts-MIT.txt", "vendor/licenses/OpenSubtitles-OPUS-ODC-BY.txt"]), "footer: Impressum, Datenschutz and the licenses, as relative links");
+  check(same(links, ["imprint.html", "privacy.html", "ai.html", "license.txt", "https://github.com/JustusTimmerer/skill-map", "vendor/licenses/d3-ISC.txt", "vendor/licenses/Archivo-OFL.txt", "vendor/licenses/IBM-Plex-Mono-OFL.txt", "vendor/licenses/Noto-Sans-OFL.txt", "vendor/licenses/zxcvbn-MIT.txt", "vendor/licenses/zxcvbn-ts-MIT.txt", "vendor/licenses/OpenSubtitles-OPUS-ODC-BY.txt"]), "footer: Impressum, Datenschutz and the licenses as relative links, and the source code on GitHub");
+  check(await page.locator("footer a", { hasText: "Quellcode auf GitHub" }).count() === 1, "footer: the link to the source code reads “Quellcode auf GitHub”");
   const frame = page.frame({ url: /example\.html$/ });
   check(!!frame, "the example map is embedded");
   await frame.waitForFunction(() => document.querySelector("#panel h2"), null, { timeout: 15000 });
