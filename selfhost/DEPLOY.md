@@ -40,11 +40,27 @@ The hosting provider and the contract on commissioned processing are facts that 
 
 ## One folder for the upload
 
-`node make_upload.js <folder>` builds the demo into one folder and adds the `.htaccess` for Apache. Use it for each upload, because a build deletes files that it does not know. The options are `--legal legal.json` (see above), `--site https://example.org` (the address in `llms.txt`) and `--example map.json` (another example map).
+`node make_upload.js <folder>` builds the demo into one folder and adds the `.htaccess` for Apache. Use it for each upload, because a build deletes files that it does not know. The options are `--legal legal.json` (see above), `--site https://example.org` (the address of the site) and `--example map.json` (another example map).
 
 ```
-node make_upload.js C:/Users/justu/skill-map-upload --legal C:/Users/justu/skill-map-legal.json --site https://www.it-skills.net
+node make_upload.js ../skill-map-upload --legal ../skill-map-legal.json --site https://it-skills.net
 ```
+
+`--site` takes an https address without a path. It does three things:
+
+- It makes the links of `llms.txt` absolute.
+- It adds `robots.txt` and `sitemap.xml`. The sitemap lists the start page, the example map and the page for AI tools. `robots.txt` keeps search engines away from the two empty map pages.
+- It adds a redirect to the `.htaccess`. Each request for another host, or over plain HTTP, gets a 301 to the same path on this address. The web space needs `mod_rewrite` and a valid certificate for each host. The redirect leaves `/.well-known/` alone, because a certificate provider can use this folder.
+
+The redirect keeps one origin. The maps of the visitors belong to the origin (see "Upload"), so without it the same site shows other maps on `www.` or over HTTP.
+
+After the first upload with a redirect, check it from outside. Each address must answer once with a 301 and then with a 200:
+
+```
+curl -sIL http://www.it-skills.net/ | grep -E "^HTTP|^Location"
+```
+
+If a browser reports too many redirects, delete the block `<IfModule mod_rewrite.c>` from the `.htaccess` on the web space.
 
 ## Upload
 
@@ -108,11 +124,15 @@ Header always set Cache-Control "no-store" "expr=%{REQUEST_STATUS} >= 400"
 AddType font/woff2 .woff2
 AddType font/ttf .ttf
 AddCharset utf-8 .html .js .css .txt
-Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'self'"
+<If "%{REQUEST_URI} !~ m#^/[^/]+/# || %{REQUEST_URI} =~ m#^/(assets|vendor|ai)/#">
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'self'"
+</If>
 Header always set X-Frame-Options "SAMEORIGIN"
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "no-referrer"
 ```
+
+The `<If>` block sends the policy for the files of the site only: the pages at the top level and the folders `assets/`, `vendor/` and `ai/`. Any other folder, such as a page of a user at `/my-page/`, gets no policy from this file. The policy blocks inline scripts, and an older page can need them. The folder can have its own `.htaccess` with a policy of its own.
 
 For nginx, put the `map` block into the `http` block, and the rest into the `server` block of the site. The `map` block picks the cache rule from the status and the version of each answer. A `types` block replaces the whole list of content types of its block. Without that list, nginx sends each page, script and style as `application/octet-stream`. With `nosniff`, the browser then downloads the pages instead of showing them, and it runs no script. So the `server` block first loads the standard list `mime.types` of nginx, and then the `types` block adds `woff2` and `ttf` to it. `charset` names UTF-8 in the content type of the pages, and `charset_types` adds the scripts, the styles and the texts:
 
@@ -161,7 +181,7 @@ On the server, one stack serves everything. Compose mounts `dist/selfhost` into 
 - The proxy sends the files of the site: `map.html` and `example.html` of stage a, `assets/`, `vendor/` and the legal pages. It sends the Content Security Policy of the site and the cache headers of this file as headers (`server/proxy/Caddyfile`).
 - The app sends the start page at `/` and `/index.html`. It adds the account of the browser, so the start page shows both ways: "Without an account, in the browser" and "Save with an account". The app sends the same policy as a header for each of its pages, with `base-uri 'self'`. The reason: it adds `<base href="/">` to the pages that it sends.
 - The app answers the API at `/api`, the account page at `/account`, and the maps at `/<handle>/<slug>` and `/s/<token>`. `/<handle>` shows the start map of the owner or the list of its public maps. On a host with subdomains, a map is also at `https://<handle>.<domain>/<slug>`.
-- A handle shares the top-level paths with the site. So a new top-level page or folder of the site needs its name in the reserved list of the server, or the build stops (`server/README.md`).
+- A handle shares the top-level paths with the site. A new top-level page or folder of the site needs its name in the reserved list of the server (`server/README.md`). Without it, the build stops.
 
 A visitor without an account uses the site as in stage a, and his maps stay in his browser. A signed-in visitor also sees the maps of the account on the start page. He can move a map of the browser into the account with "Copy to the account".
 

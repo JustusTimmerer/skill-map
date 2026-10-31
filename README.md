@@ -2,9 +2,9 @@
 
 Skill-Map shows the skills of a person as a network. It sorts skills into areas and categories. It shows at which stations (employers, education, private projects) and in which projects the person used each skill. Readers zoom in, filter by station, project and time range, and download the map as SVG, PNG or PDF.
 
-[![The demo map: six areas, their categories and skills, and the lines between skills that the same station used](docs/demo-map.webp)](https://www.it-skills.net/example.html)
+[![The demo map: six areas, their categories and skills, and the lines between skills that the same station used](docs/demo-map.webp)](https://it-skills.net/example.html)
 
-Open the [demo map](https://www.it-skills.net/example.html) in your browser. To make your own map, use the hosted site at [it-skills.net](https://it-skills.net/).
+Open the [demo map](https://it-skills.net/example.html) in your browser. To make your own map, use the hosted site at [it-skills.net](https://it-skills.net/).
 
 The site runs in the browser. A map lives in the browser of its owner, and the map file is its safe copy. An optional server adds accounts, shared maps and teams.
 

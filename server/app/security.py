@@ -34,7 +34,7 @@ RESERVED = frozenset("""
     root system it-skills itskills smtp imap pop pop3 ftp sftp ssh ns ns1 ns2 dns mx cdn dev test staging
     demo public shared share user users new edit webmail autoconfig
     autodiscover postmaster hostmaster abuse noreply no-reply security
-    vendor index example map server-map imprint ai llms license
+    vendor index example map server-map imprint ai llms license robots sitemap
 """.split())
 
 def normalize_password(password: str) -> str:

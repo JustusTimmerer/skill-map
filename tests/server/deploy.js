@@ -549,6 +549,62 @@ test("snippets", "Apache with the .htaccess of DEPLOY.md: the same headers", asy
   } finally { run("docker", ["stop", name]); }
 });
 
+test("snippets", "Apache with the upload of make_upload.js: one address for the site, over real TLS, and robots.txt and sitemap.xml", async ({ check }) => {
+  const host = "skillmap.test", other = "www.skillmap.test", address = `https://${host}`;
+  const folder = path.join(OUT, "snippets", "upload");
+  fs.rmSync(folder, { recursive: true, force: true });
+  const made = run(process.execPath, [path.join(repo, "make_upload.js"), folder, "--site", address]);
+  check(made.status === 0, "make_upload.js runs: " + short(made.stderr, 200));
+  fs.mkdirSync(path.join(folder, ".well-known"));
+  fs.writeFileSync(path.join(folder, ".well-known", "probe.txt"), "probe\n");
+  fs.mkdirSync(path.join(folder, "my-page"));
+  fs.writeFileSync(path.join(folder, "my-page", "index.html"), "<script>document.title = \"own\";</script>\n");
+
+  const name = `skillmap-deploy-upload-${RUN}`, plainPort = 49235, tlsPort = 49236;
+  const setup = 'c=/usr/local/apache2/conf/httpd.conf; for m in headers rewrite ssl socache_shmcb; do sed -i "s/^#LoadModule ${m}_module/LoadModule ${m}_module/" $c; done; '
+    + 'sed -i "/<Directory \\"\\/usr\\/local\\/apache2\\/htdocs\\">/,/<\\/Directory>/ s/AllowOverride None/AllowOverride All/" $c; '
+    + 'apk add --no-cache openssl >/dev/null; openssl req -x509 -newkey rsa:2048 -nodes -days 1 -subj /CN=skillmap.test -keyout /usr/local/apache2/conf/server.key -out /usr/local/apache2/conf/server.crt 2>/dev/null; '
+    + 'echo "Include conf/extra/httpd-ssl.conf" >> $c; exec httpd-foreground';
+  const start = run("docker", ["run", "--rm", "-d", "--name", name, "-p", `127.0.0.1:${plainPort}:80`, "-p", `127.0.0.1:${tlsPort}:443`, "-v", `${folder}:/usr/local/apache2/htdocs:ro`, HTTPD, "sh", "-c", setup]);
+  // TLS needs the name of the host in the header and no check of the certificate of this test. Node sends no redirect itself.
+  const ask = (scheme, hostName, target) => new Promise((done) => {
+    const options = { hostname: "127.0.0.1", port: scheme === "https" ? tlsPort : plainPort, path: target, headers: { host: hostName }, rejectUnauthorized: false, servername: host };
+    (scheme === "https" ? https : http).get(options, (response) => {
+      let text = "";
+      response.on("data", (part) => { text += part; });
+      response.on("end", () => done({ status: response.statusCode, location: response.headers.location, type: response.headers["content-type"], policy: response.headers["content-security-policy"], text }));
+    }).on("error", (error) => done({ status: 0, error: error.message }));
+  });
+  try {
+    check(start.status === 0, "Apache starts: " + short(start.stderr, 200));
+    await until("Apache with TLS", async () => (await ask("https", host, "/")).status === 200, 60000);
+    for (const [scheme, hostName] of [["http", host], ["http", other], ["https", other]]) {
+      const a = await ask(scheme, hostName, "/example.html?x=1");
+      check(a.status === 301 && a.location === `${address}/example.html?x=1`, `${scheme}://${hostName} goes to the one address, with path and query: ${a.status} ${a.location}`);
+      check(a.policy === POLICY, `${scheme}://${hostName}: the redirect carries the policy of the site`);
+    }
+    const page = await ask("https", host, "/example.html?x=1");
+    check(page.status === 200 && page.policy === POLICY, `the one address answers without a redirect: ${page.status} ${page.location || ""}`);
+    const upper = await ask("https", host.toUpperCase(), "/");
+    check(upper.status === 200, `the host in capitals needs no redirect: ${upper.status}`);
+    const proxied = await new Promise((done) => http.get({ hostname: "127.0.0.1", port: plainPort, path: "/", headers: { host, "x-forwarded-proto": "https" } }, (r) => { r.resume(); done(r.statusCode); }));
+    check(proxied === 200, `a proxy that ends TLS causes no redirect loop: ${proxied}`);
+    const own = await ask("https", host, "/my-page/index.html");
+    check(own.status === 200 && own.policy === undefined, `a folder of its own keeps its inline script, so it gets no policy: ${own.status} ${own.policy}`);
+    const moved = await ask("http", other, "/my-page/");
+    check(moved.status === 301 && moved.location === `${address}/my-page/`, `the redirect also covers such a folder: ${moved.status} ${moved.location}`);
+    for (const target of ["/ai/format.txt", "/assets/site.css", "/index.html", "/"]) {
+      const a = await ask("https", host, target);
+      check(a.status === 200 && a.policy === POLICY, `the files of the site keep the policy: ${target} ${a.status}`);
+    }
+    const known = await ask("http", other, "/.well-known/probe.txt");
+    check(known.status === 200 && known.text === "probe\n", `the folder .well-known has no redirect: ${known.status}`);
+    const robots = await ask("https", host, "/robots.txt"), sitemap = await ask("https", host, "/sitemap.xml");
+    check(robots.status === 200 && robots.type === "text/plain; charset=utf-8" && robots.text.includes(`Sitemap: ${address}/sitemap.xml\n`), `robots.txt: ${robots.status} ${robots.type}`);
+    check(sitemap.status === 200 && /xml/.test(sitemap.type || "") && sitemap.text.includes(`<loc>${address}/example.html</loc>`), `sitemap.xml: ${sitemap.status} ${sitemap.type}`);
+  } finally { run("docker", ["stop", name]); }
+});
+
 // ---------------------------------------------------------------------------------------------------------------------
 (async () => {
   const parts = process.argv.slice(2);

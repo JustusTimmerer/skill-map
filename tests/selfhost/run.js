@@ -3,7 +3,7 @@
 // It serves dist/selfhost/ (node build_selfhost.js) on 127.0.0.1, and every test fails on a request to another host.
 // Usage: node tests/selfhost/run.js [part of a test name ...]    E2E_VERBOSE=1 prints every check.
 // A test that does not end within 6 minutes fails with its name (E2E_TEST_LIMIT_S of tests/e2e/harness.js changes it).
-const fs = require("fs"), path = require("path");
+const fs = require("fs"), path = require("path"), { spawnSync } = require("child_process");
 const { run, runOne } = require("../e2e/harness");
 const { chooseLanguage, englishOf, germanIn, textOf, pdfText } = require("../e2e/site");
 const { serve } = require("./server");
@@ -1276,6 +1276,27 @@ test("llms.txt and the format text: served as text, every link resolves, and the
   check(files["ai.html"].status === 200, "the page for people is there");
   check(files["license.txt"].status === 200 && files["license.txt"].type.startsWith("text/plain") && files["license.txt"].text.startsWith("Required Notice: Copyright (c) 2026 Justus Timmerer") && files["license.txt"].text.includes("PolyForm Noncommercial License 1.0.0"), "license.txt holds the notice and the PolyForm Noncommercial License");
 }));
+
+test("make_upload.js: robots.txt, sitemap.xml and the redirect come from --site, and without it the site has none of them", async ({ check }) => {
+  const upload = (...options) => {
+    const folder = path.join(OUT, "upload");
+    fs.rmSync(folder, { recursive: true, force: true });
+    const made = spawnSync(process.execPath, [path.join(repo, "make_upload.js"), folder, ...options], { encoding: "utf8" });
+    return { made, read: (name) => { try { return fs.readFileSync(path.join(folder, name), "utf8"); } catch { return null; } } };
+  };
+  const { made, read } = upload("--site", "https://example.org/");
+  check(made.status === 0, "it runs with --site: " + made.stderr.slice(0, 200));
+  check(read("robots.txt") === "User-agent: *\nDisallow: /map.html\nDisallow: /server-map.html\n\nSitemap: https://example.org/sitemap.xml\n", "robots.txt: " + read("robots.txt"));
+  const pages = [...read("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  check(same(pages, ["https://example.org/", "https://example.org/example.html", "https://example.org/ai.html"]), "the sitemap lists the pages for readers, not the imprint: " + pages.join(", "));
+  check(!read("sitemap.xml").includes("imprint"), "the sitemap leaves out the imprint");
+  check(read(".htaccess").includes("RewriteCond %{HTTP_HOST} !=example.org [NC]") && read(".htaccess").includes("RewriteRule ^ https://example.org%{REQUEST_URI} [R=301,L]"), "the .htaccess redirects to the address of --site");
+  check(read("llms.txt").includes("https://example.org/ai/format.txt"), "llms.txt has absolute links");
+  const without = upload();
+  check(without.made.status === 0 && without.read("robots.txt") === null && without.read("sitemap.xml") === null, "without --site there is no robots.txt and no sitemap.xml");
+  check(!without.read(".htaccess").includes("Rewrite"), "without --site the .htaccess has no redirect");
+  for (const bad of ["http://example.org", "https://example.org/sub"]) check(upload("--site", bad).made.status === 1, "it refuses --site " + bad);
+});
 
 test("the page for people: heading, steps and the prompt with the address of llms.txt, in English and in German", withSite({ language: null }, async (page, check) => {
   for (const language of ["en", "de"]) {

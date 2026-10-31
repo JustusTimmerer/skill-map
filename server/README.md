@@ -193,7 +193,7 @@ The tests of the deploy run Docker on the host, from the root of the repository:
 - `stack` starts a fresh stack. It checks the rights inside each running container and the password that `db-setup` makes. It also checks HTTP/3 and the option `WWW_REDIRECT`. Last, it checks the files of the site during a new build and while the app fails.
 - `backup` runs `backup.sh` on that stack and checks its loud failures. Then it runs the code blocks of "Restore" as they stand, into a new project, and the test map comes back.
 - `upgrade` starts the stack of the version before the rights of the containers (commit `626ac3b`) with data. Then it starts the stack of this checkout on the same volumes.
-- `snippets` serves the site with the lines of `selfhost/DEPLOY.md` in real nginx and Apache containers and checks each header.
+- `snippets` serves the site with the lines of `selfhost/DEPLOY.md` in real nginx and Apache containers and checks each header. It also serves a folder of `make_upload.js` in Apache with TLS and checks the redirect, `robots.txt` and `sitemap.xml`.
 
 Pass the names of parts to run only those, for example `node tests/server/deploy.js compose snippets`.
 

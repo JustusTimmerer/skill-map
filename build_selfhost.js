@@ -461,6 +461,13 @@ function build(out = OUT, { pseudo = false } = {}) {
   readMap(AI_EXAMPLE, R);
   const siteBase = (process.env.SKILLMAP_SITE_URL || "").replace(/\/+$/, "");
   put("llms.txt", plain(path.join(SELF, "site", "llms.txt")).split("@SITE@").join(siteBase ? siteBase + "/" : ""));
+  // A sitemap lists absolute addresses, so both files need the address of the site. The imprint stays out of the sitemap,
+  // because it holds the address of the owner. map.html and server-map.html are empty tools.
+  if (siteBase) {
+    put("robots.txt", `User-agent: *\nDisallow: /map.html\nDisallow: /server-map.html\n\nSitemap: ${siteBase}/sitemap.xml\n`);
+    put("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+      + ["", "example.html", "ai.html"].map((page) => `  <url><loc>${siteBase}/${page}</loc></url>\n`).join("") + "</urlset>\n");
+  }
   put("license.txt", plain(path.join(repo, "LICENSE")));
   put("ai/format.txt", plain(path.join(SELF, "site", "ai", "format.txt")));
   put("ai/example.it-skills-map.json", plain(AI_EXAMPLE));
