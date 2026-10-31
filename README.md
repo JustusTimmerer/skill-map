@@ -8,6 +8,12 @@ Open the [demo map](https://it-skills.net/example.html) in your browser. To make
 
 The site runs in the browser. A map lives in the browser of its owner, and the map file is its safe copy. An optional server adds accounts, shared maps and teams.
 
+## AI note
+
+This is created with AI and I did not review the Javascript code personally. 
+If you find anything problematic, let me know or suggest a fix. 
+The whole thing is as data friendly as it gets. I certainly don't want to store any data. I just had a fitting domain and got a webspace that hosts the files. 
+
 ## What is in this repository
 
 - `selfhost/site/`, `selfhost/runtime/` and `skills/`: the static site and the editor. The owner of a map edits areas, categories, skills, stations and projects. A force menu sets the layout.
